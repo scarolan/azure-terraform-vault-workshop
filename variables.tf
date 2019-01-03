@@ -5,29 +5,13 @@
 # Terraform code. If you create a variable with no default, the user will be
 # prompted to enter it (or define it via config file or command line flags.)
 
-variable "resource_group" {
-  description = "The name of your Azure Resource Group."
-  default     = "Sean-Azure-Vault-SQL-Demo"
-}
-
-variable "demo_prefix" {
-  description = "This prefix will be included in the name of some resources."
-  default     = "avsdemo"
-}
-
-variable "hostname" {
-  description = "VM hostname. Used for local hostname, DNS, and storage-related names."
-  default     = "azurevaultsql"
+variable "prefix" {
+  description = "This prefix will be included in the name of most resources."
 }
 
 variable "location" {
   description = "The region where the virtual network is created."
   default     = "centralus"
-}
-
-variable "virtual_network_name" {
-  description = "The name for your virtual network."
-  default     = "vnet"
 }
 
 variable "address_space" {
@@ -76,16 +60,11 @@ variable "image_version" {
 }
 
 variable "admin_username" {
-  description = "Administrator user name"
-  default     = "mysqladmin"
+  description = "Administrator user name for linux and mysql"
+  default = "hashicorp"
 }
 
 variable "admin_password" {
-  description = "Administrator password"
-  default     = "replace-with-your-password"
-}
-
-variable "mysql_hostname" {
-  description = "Hostname for your MySQL server"
-  default     = "sean-mysql-server-1"
+  description = "Administrator password for linux and mysql"
+  default = "Password123!"
 }

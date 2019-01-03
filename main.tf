@@ -1,11 +1,11 @@
 ##############################################################################
-# HashiCorp Vault Dynamic Database Secrets Engine Demo
+# HashiCorp Terraform and Vault Workshop
 # 
 # This Terraform configuration will create the following:
 #
 # * Resource group with a virtual network and subnet
-# * A HashiCorp Vault server, preconfigured in demo mode
-# * An Azure MySQL database server and demo database
+# * A Linux server running HashiCorp Vault and a simple application
+# * A hosted Azure MySQL database server
 
 ##############################################################################
 # Shared infrastructure resources
@@ -14,8 +14,8 @@
 # resource group. Think of it as a container to hold all your resources. 
 # You can find a complete list of Azure resources supported by Terraform here:
 # https://www.terraform.io/docs/providers/azurerm/
-resource "azurerm_resource_group" "hashivaultdemo" {
-  name     = "${var.resource_group}"
+resource "azurerm_resource_group" "vaultworkshop" {
+  name     = "${var.prefix}-vault-workshop"
   location = "${var.location}"
 }
 
@@ -26,10 +26,10 @@ resource "azurerm_resource_group" "hashivaultdemo" {
 # works visually, run `terraform graph` and copy the output into the online
 # GraphViz tool: http://www.webgraphviz.com/
 resource "azurerm_virtual_network" "vnet" {
-  name                = "${var.virtual_network_name}"
-  location            = "${azurerm_resource_group.hashivaultdemo.location}"
+  name                = "${var.prefix}-vnet"
+  location            = "${azurerm_resource_group.vaultworkshop.location}"
   address_space       = ["${var.address_space}"]
-  resource_group_name = "${azurerm_resource_group.hashivaultdemo.name}"
+  resource_group_name = "${azurerm_resource_group.vaultworkshop.name}"
 }
 
 # Next we'll build a subnet to run our VMs in. These variables can be defined 
@@ -38,14 +38,14 @@ resource "azurerm_virtual_network" "vnet" {
 # default variables in the variables.tf file. You can customize this demo by
 # making a copy of the terraform.tfvars.example file.
 resource "azurerm_subnet" "subnet" {
-  name                 = "${var.demo_prefix}subnet"
+  name                 = "${var.prefix}-subnet"
   virtual_network_name = "${azurerm_virtual_network.vnet.name}"
-  resource_group_name  = "${azurerm_resource_group.hashivaultdemo.name}"
+  resource_group_name  = "${azurerm_resource_group.vaultworkshop.name}"
   address_prefix       = "${var.subnet_prefix}"
 }
 
 ##############################################################################
-# HashiCorp Vault Server
+# HashiCorp Vault Server / App Server
 #
 # Now that we have a network, we'll deploy a stand-alone HashiCorp Vault 
 # server. Vault supports a 'dev' mode which is appropriate for demonstrations
@@ -58,9 +58,9 @@ resource "azurerm_subnet" "subnet" {
 
 # Security group to allow inbound access on port 8200 and 22
 resource "azurerm_network_security_group" "vault-sg" {
-  name                = "${var.demo_prefix}-sg"
+  name                = "${var.prefix}-sg"
   location            = "${var.location}"
-  resource_group_name = "${azurerm_resource_group.hashivaultdemo.name}"
+  resource_group_name = "${azurerm_resource_group.vaultworkshop.name}"
 
   security_rule {
     name                       = "Vault"
@@ -90,13 +90,13 @@ resource "azurerm_network_security_group" "vault-sg" {
 # A network interface. This is required by the azurerm_virtual_machine 
 # resource. Terraform will let you know if you're missing a dependency.
 resource "azurerm_network_interface" "vault-nic" {
-  name                      = "${var.demo_prefix}vault-nic"
+  name                      = "${var.prefix}-vault-nic"
   location                  = "${var.location}"
-  resource_group_name       = "${azurerm_resource_group.hashivaultdemo.name}"
+  resource_group_name       = "${azurerm_resource_group.vaultworkshop.name}"
   network_security_group_id = "${azurerm_network_security_group.vault-sg.id}"
 
   ip_configuration {
-    name                          = "${var.demo_prefix}ipconfig"
+    name                          = "${var.prefix}ipconfig"
     subnet_id                     = "${azurerm_subnet.subnet.id}"
     private_ip_address_allocation = "Dynamic"
     public_ip_address_id          = "${azurerm_public_ip.vault-pip.id}"
@@ -107,11 +107,11 @@ resource "azurerm_network_interface" "vault-nic" {
 # optionally add a public IP address for Internet-facing applications and 
 # demo environments like this one.
 resource "azurerm_public_ip" "vault-pip" {
-  name                         = "${var.demo_prefix}-ip"
+  name                         = "${var.prefix}-ip"
   location                     = "${var.location}"
-  resource_group_name          = "${azurerm_resource_group.hashivaultdemo.name}"
+  resource_group_name          = "${azurerm_resource_group.vaultworkshop.name}"
   public_ip_address_allocation = "Dynamic"
-  domain_name_label            = "${var.hostname}"
+  domain_name_label            = "${var.prefix}"
 }
 
 # And finally we build our Vault server. This is a standard Ubuntu instance.
@@ -119,9 +119,9 @@ resource "azurerm_public_ip" "vault-pip" {
 # the demo environment. Terraform supports several different types of 
 # provisioners including Bash, Powershell and Chef.
 resource "azurerm_virtual_machine" "vault" {
-  name                = "${var.hostname}-vault"
+  name                = "${var.prefix}-vault"
   location            = "${var.location}"
-  resource_group_name = "${azurerm_resource_group.hashivaultdemo.name}"
+  resource_group_name = "${azurerm_resource_group.vaultworkshop.name}"
   vm_size             = "${var.vm_size}"
 
   network_interface_ids         = ["${azurerm_network_interface.vault-nic.id}"]
@@ -135,14 +135,14 @@ resource "azurerm_virtual_machine" "vault" {
   }
 
   storage_os_disk {
-    name              = "${var.hostname}-osdisk"
+    name              = "${var.prefix}-osdisk"
     managed_disk_type = "Standard_LRS"
     caching           = "ReadWrite"
     create_option     = "FromImage"
   }
 
   os_profile {
-    computer_name  = "${var.hostname}"
+    computer_name  = "${var.prefix}"
     admin_username = "${var.admin_username}"
     admin_password = "${var.admin_password}"
   }
@@ -168,7 +168,7 @@ resource "azurerm_virtual_machine" "vault" {
   provisioner "remote-exec" {
     inline = [
       "chmod +x /home/${var.admin_username}/setup.sh",
-      "MYSQL_HOST=${var.mysql_hostname} VAULT_ADDR=http://127.0.0.1:8200 /home/${var.admin_username}/setup.sh",
+      "MYSQL_HOST=${var.prefix}-mysql-server VAULT_ADDR=http://127.0.0.1:8200 MYSQLPW=${var.admin_password} /home/${var.admin_username}/setup.sh",
     ]
 
     connection {
@@ -189,9 +189,9 @@ resource "azurerm_virtual_machine" "vault" {
 # resources. Each resource is documented with all the available settings:
 # https://www.terraform.io/docs/providers/azurerm/r/mysql_server.html
 resource "azurerm_mysql_server" "mysql" {
-  name                = "${var.mysql_hostname}"
-  location            = "${azurerm_resource_group.hashivaultdemo.location}"
-  resource_group_name = "${azurerm_resource_group.hashivaultdemo.name}"
+  name                = "${var.prefix}-mysql-server"
+  location            = "${azurerm_resource_group.vaultworkshop.location}"
+  resource_group_name = "${azurerm_resource_group.vaultworkshop.name}"
   ssl_enforcement     = "Disabled"
 
   sku {
@@ -207,31 +207,36 @@ resource "azurerm_mysql_server" "mysql" {
     geo_redundant_backup  = "Disabled"
   }
 
-  administrator_login          = "mysqladmin"
-  administrator_login_password = "Everything-is-bananas-010101"
+  administrator_login          = "${var.admin_username}"
+  administrator_login_password = "${var.admin_password}"
   version                      = "5.7"
   ssl_enforcement              = "Disabled"
 }
 
-# This is a sample database that we'll populate with the MySQL sample data
-# set provided here: https://github.com/datacharmer/test_db. With Terraform,
-# everything is Infrastructure as Code. No more manual steps, aging runbooks,
-# tribal knowledge or outdated wiki instructions. Terraform is your executable
-# documentation, and it will build infrastructure correctly every time.
+# This is a sample database that we'll populate with data from our app.
+# With Terraform, everything is Infrastructure as Code. No more manual steps,
+# aging runbooks, tribal knowledge or outdated wiki instructions. Terraform
+# is your executable documentation, and it will build infrastructure correctly
+# every time.
 resource "azurerm_mysql_database" "employees" {
   name                = "employees"
-  resource_group_name = "${azurerm_resource_group.hashivaultdemo.name}"
+  resource_group_name = "${azurerm_resource_group.vaultworkshop.name}"
   server_name         = "${azurerm_mysql_server.mysql.name}"
   charset             = "utf8"
   collation           = "utf8_unicode_ci"
 }
 
-# This firewall rule allows database connections from anywhere and is suited
-# for demo environments. Don't do this in production. 
-resource "azurerm_mysql_firewall_rule" "demo" {
-  name                = "vault-demo"
-  resource_group_name = "${azurerm_resource_group.hashivaultdemo.name}"
+data "azurerm_public_ip" "vault-pip" {
+  name                = "${azurerm_public_ip.vault-pip.name}"
+  resource_group_name = "${azurerm_virtual_machine.vault.resource_group_name}"
+}
+
+
+# Allows the Linux VM to connect to the MySQL database
+resource "azurerm_mysql_firewall_rule" "vault-mysql" {
+  name                = "vault-mysql"
+  resource_group_name = "${azurerm_resource_group.vaultworkshop.name}"
   server_name         = "${azurerm_mysql_server.mysql.name}"
-  start_ip_address    = "0.0.0.0"
-  end_ip_address      = "0.0.0.0"
+  start_ip_address    = "${data.azurerm_public_ip.vault-pip.ip_address}"
+  end_ip_address      = "${data.azurerm_public_ip.vault-pip.ip_address}"
 }
