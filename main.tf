@@ -3,7 +3,7 @@
 # 
 # This Terraform configuration will create the following:
 #
-# * Resource group with a virtual network and subnet
+# * Azure Resource group with a virtual network and subnet
 # * A Linux server running HashiCorp Vault and a simple application
 # * A hosted Azure MySQL database server
 
@@ -13,7 +13,10 @@
 # First we'll create a resource group. In Azure every resource belongs to a 
 # resource group. Think of it as a container to hold all your resources. 
 # You can find a complete list of Azure resources supported by Terraform here:
-# https://www.terraform.io/docs/providers/azurerm/
+# https://www.terraform.io/docs/providers/azurerm/. Note the use of variables 
+# to dynamically set our name and location. Variables are usually defined in 
+# the variables.tf file, and you can override the defaults in your 
+# own terraform.tfvars file.
 resource "azurerm_resource_group" "vaultworkshop" {
   name     = "${var.prefix}-vault-workshop"
   location = "${var.location}"
@@ -226,13 +229,17 @@ resource "azurerm_mysql_database" "employees" {
   collation           = "utf8_unicode_ci"
 }
 
+# Public IP addresses are not generated until they are attached to an object.
+# So we use a 'data source' here to fetch it once its available. Then we can
+# provide the public IP address to the next resource for allowing firewall 
+# access to our database.
 data "azurerm_public_ip" "vault-pip" {
   name                = "${azurerm_public_ip.vault-pip.name}"
   resource_group_name = "${azurerm_virtual_machine.vault.resource_group_name}"
 }
 
-
-# Allows the Linux VM to connect to the MySQL database
+# Allows the Linux VM to connect to the MySQL database, using the IP address
+# from the data source above.
 resource "azurerm_mysql_firewall_rule" "vault-mysql" {
   name                = "vault-mysql"
   resource_group_name = "${azurerm_resource_group.vaultworkshop.name}"
