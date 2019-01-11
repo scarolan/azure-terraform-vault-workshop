@@ -7,3 +7,6 @@
 
 # .tfvars files
 *.tfvars
+
+# Remote state file
+remote_state.tf
