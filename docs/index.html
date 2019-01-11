@@ -12,7 +12,8 @@
 name: Terraforming-Azure-for-Beginners
 class: center,middle,title-slide
 count: false
-![:scale 40%](images/Terraform_VerticalLogo_FullColor.png)
+count: false
+![:scale 80%](images/tfaz.png)
 .titletext[
 Terraform and Azure  
 for Beginners]
@@ -20,61 +21,109 @@ Get up and running with Terraform
 on Azure in less than 15 Minutes
 
 ???
-My name is Sean Carolan and I'm a Solutions Engineer with HashiCorp. I like building things. In my past life I was a Linux system administrator, now I travel and help users get started with Infrastructure as Code.
-
-Welcome to the beginner's guide to Terraform on Azure. We'll have you provisioning your first application on Azure with Terraform in less than 15 minutes. If you're new to Terraform or Azure, this webinar is for YOU. And if you're a Terraform veteran, hang around, perhaps you'll learn a few new tricks.
+Welcome to the beginner's guide to Terraform on Azure. 
 
 ---
-name: Its-Dangerous-to-Go-Alone
-class: center, middle, title-slide
-count: false
-
-![:scale 100%](./images/its-dangerous-to-go-alone.png)
-
-???
-Learning a new skill can be scary and weird. Maybe you are not a programmer. Don't let that stop you. Terraform is not like learning C or Java. You do not need to be a software developer to take advantage of Terraform.
-
-Our goal today is to equip you with some basic skills and get you started on your journey with infrastructure as code. Once you've got some basic Terraform skills this gets a lot easier. It's like learning any new language. The key is to get started with the basics and practice.
-
----
-name: What-is-Azure
-What is Microsoft Azure?
--------------------------
-
-![:scale 100%](./images/microsoft-azure.png)
-
-Microsoft Azure is a cloud computing platform that you can use to run your infrastructure and applications. 
-
-
-???
-Merriam Webster defines Azure as "bright blue in color, like a cloudless sky." So just imagine you're a majestic eagle soaring above the clouds. How do you pronounce Azure? I've heard three variations:
-
-US English (adj):  Azure
-UK English (adj):  Azure
-UK English (n):    Azure
-Spanish:           Azur
-
-https://dictionary.cambridge.org/us/pronunciation/english/azure
-
-However you pronounce it will probably depend on where you are in the world and which flavor of English is most popular there.  
-
----
-name: What-can-I-build
-What Can I Build in Azure?
--------------------------
+name: Table-of-Contents
+class: center,middle
+Table of Contents
+=========================
 
 .contents[
-* Linux Virtual Machines
-* Windows Virtual Machines
-* Containers
-* Networks
-* Databases
-* Functions as a Service
-* Much, much more...
+0. Introduction
+1. Set Up Your Workstation
+2. My First Terraform Code
+3. Terraform In Action: plan, apply, destroy
+4. Organize Your Infrastructure Code
+5. Provision and Configure Azure VMs
+6. Manage and Change Infrastructure State
+7. Terraform Enterprise - Built for Teams and Organizations
 ]
 
-???
-What can I build in Azure? Just about anything! The beauty of the cloud is that it allows organizations and companies to rent their infrastructure. Traditionally if you wanted to run an application you'd either need to build your own data center or lease some space from a data center provider. You could then buy a bunch of servers, install your operating system and application on them and configure your application for use. Most companies do not want to be in the business of running data centers.  And guess what - Microsoft is really good at this. They have a ton of experience and huge teams of people to maintain the hardware and network connectivity that you need, and you can simply rent your resources by the hour (or even by the minute).  It's pay-as-you go computing that you use just like a utility. Imagine I have three faucets, labeled compute, network, and storage. I can turn on as much as I need, run it for as long as I want, and then shut it off when I'm done using it. Those resources I was using are returned back to the pool of compute, network and storage.
+---
+name: Introductions
+Introductions
+-------------------------
+<br><br><br>
+.contents[
+* Your Name
+* Job Title
+* Automation Experience
+* Favorite Text Editor
+]
+
+---
+name: How-to-Provision-a-VM
+How to Provision an Azure VM
+-------------------------
+<br><br><br>
+
+Let's look at a few different ways you could provision a new Azure Virtual Machine. Before we start we'll need to gather some basic information including:
+
+.biglist[
+1. Virtual Machine Name
+1. Operating System (Image)
+1. VM Size
+1. Geographical Location
+1. Username and Password
+]
+
+---
+name: Azure-Portal-Provision
+Method 1: Azure Portal (GUI)
+-------------------------
+![:scale 100%](images/azure_provision.png)
+
+---
+name: Azure-Portal-Provision-2
+Method 1: Azure Portal (GUI)
+-------------------------
+![:scale 100%](images/azure_provision_2.png)
+
+---
+name: Azure-Portal-Provision-3
+Method 1: Azure Portal (GUI)
+-------------------------
+![:scale 100%](images/azure_provision_3.png)
+
+---
+name: Azure-Resource-Manager
+Method 2: Azure Resource Manager (ARM) Template
+-------------------------
+```json
+{
+...
+"apiVersion": "2017-03-30",
+"type": "Microsoft.Compute/virtualMachines",
+"name": "[variables('vmName')]",
+"location": "[parameters('location')]",
+"dependsOn": [
+  "[concat('Microsoft.Network/networkInterfaces/', variables('nicName'))]"
+],
+"properties": {
+  "hardwareProfile": {
+    "vmSize": "[parameters('virtualMachineSize')]"
+  },
+  "osProfile": {
+    "computerName": "[variables('vmName')]",
+    "adminUsername": "[parameters('adminUsername')]",
+    "adminPassword": "[parameters('adminPassword')]"
+  }
+```
+
+ARM templates provide a consistent and reliable way to provision Azure resources. JSON is easy for computers to read, but can be challenging for humans to edit and troubleshoot.
+
+---
+name: Provision-with-Terraform
+Method 3: Provision with Terraform
+-------------------------
+![:scale 100%](images/infra_as_code.png)
+
+---
+name: Provision-with-Terraform-2
+Method 3: Provision with Terraform
+-------------------------
+![:scale 100%](images/infra_as_code_2.png)
 
 ---
 name: What-is-Terraform
@@ -84,7 +133,6 @@ What is Terraform?
 ![:scale 100%](./images/azure_tf_code.png)
 
 .contents[
-* Infrastructure as Code
 * Executable Documentation
 * Human and machine readable
 * Easy to learn
@@ -96,65 +144,330 @@ What is Terraform?
 Terraform is the DNA of your infrastructure.
 
 ---
+name: IaC
+What is Infrastructure as Code?
+-------------------------
+<br><br><br>
+.biglist[
+Infrastructure as Code (IaC) is the process of managing and provisioning cloud infrastructure with machine-readable definition files. 
+
+Think of it as executable documentation.
+]
+
+---
+name: IaC2
+Infrastructure as Code Allows Us To...
+-------------------------
+
+---
+name: IaC2
+Infrastructure as Code Allows Us To...
+-------------------------
+<br><br>
+.biglist[
+* Provide a codified workflow to create infrastructure
+]
+
+---
+name: IaC2
+Infrastructure as Code Allows Us To...
+-------------------------
+<br><br>
+.biglist[
+* Provide a codified workflow to create infrastructure
+* Change and update existing infrastructure
+]
+
+---
+name: IaC2
+Infrastructure as Code Allows Us To...
+-------------------------
+<br><br>
+.biglist[
+* Provide a codified workflow to create infrastructure
+* Change and update existing infrastructure
+* Safely test changes using `terraform plan` in dry run mode
+]
+
+---
+name: IaC2
+Infrastructure as Code Allows Us To...
+-------------------------
+<br><br>
+.biglist[
+* Provide a codified workflow to create infrastructure
+* Change and update existing infrastructure
+* Safely test changes using `terraform plan` in dry run mode
+* Integrate with application code workflows (Git, Azure DevOps, CI/CD tools)
+]
+
+---
+name: IaC2
+Infrastructure as Code Allows Us To...
+-------------------------
+<br><br>
+.biglist[
+* Provide a codified workflow to create infrastructure
+* Change and update existing infrastructure
+* Safely test changes using `terraform plan` in dry run mode
+* Integrate with application code workflows (Git, Azure DevOps, CI/CD tools)
+* Provide reusable modules for easy sharing and collaboration
+]
+
+---
+name: IaC2
+Infrastructure as Code Allows Us To...
+-------------------------
+<br><br>
+.biglist[
+* Provide a codified workflow to create infrastructure
+* Change and update existing infrastructure
+* Safely test changes using `terraform plan` in dry run mode
+* Integrate with application code workflows (Git, Azure DevOps, CI/CD tools)
+* Provide reusable modules for easy sharing and collaboration
+* Enforce security policy and organizational standards
+]
+
+---
+name: IaC2
+Infrastructure as Code Allows Us To...
+-------------------------
+<br><br>
+.biglist[
+* Provide a codified workflow to create infrastructure
+* Change and update existing infrastructure
+* Safely test changes using `terraform plan` in dry run mode
+* Integrate with application code workflows (Git, Azure DevOps, CI/CD tools)
+* Provide reusable modules for easy sharing and collaboration
+* Enforce security policy and organizational standards
+* Enable collaboration between different teams
+]
+
+---
+name: IaC-Tools
+Other Infrastructure as Code Tools
+-------------------------
+<br><br>
+.center[![:scale 60%](images/infra_tools.png)]
+
+These tools work well for configuring the operating system and application. They are not purpose-built for provisioning cloud infrastructure and platform services.
+
+---
+name: Native-Tools
+Native Cloud Provisioning Tools
+-------------------------
+<br><br><br>
+.center[![:scale 100%](images/clouds.png)]
+
+Each cloud has its own YAML or JSON based provisioning tool. 
+
+Terraform can be used across *all* major cloud providers and VM hypervisors.
+
+---
+Name: Terraform-vs-JSON
+Terraform vs. JSON
+-------------------------
+
+ARM JSON:
+```json
+"name": "[concat(parameters('PilotServerName'), '3')]",
+```
+
+Terraform:
+```hcl
+name = "${var.PilotServerName}3"
+```
+
+Terraform code (HCL) is easy to learn and easy to read. It is also 50-70% more compact than an equivalent JSON configuration.
+
+---
+Name: Why-Terraform
+Why Terraform?
+-------------------------
+![:scale 100%](images/azure-loves-terraform.png)
+
+---
+Name: Why-Terraform
+Why Terraform?
+-------------------------
+
+.contents[
+* Supports multi-cloud & hybrid infrastructure
+]
+
+---
+Name: Why-Terraform
+Why Terraform?
+-------------------------
+
+.contents[
+* Supports multi-cloud & hybrid infrastructure
+* Migrate from other cloud providers
+]
+
+---
+Name: Why-Terraform
+Why Terraform?
+-------------------------
+
+.contents[
+* Supports multi-cloud & hybrid infrastructure
+* Migrate from other cloud providers
+* Increase provisioning speed
+]
+
+---
+Name: Why-Terraform
+Why Terraform?
+-------------------------
+
+.contents[
+* Supports multi-cloud & hybrid infrastructure
+* Migrate from other cloud providers
+* Increase provisioning speed
+* Improve efficiency
+]
+
+---
+Name: Why-Terraform
+Why Terraform?
+-------------------------
+
+.contents[
+* Supports multi-cloud & hybrid infrastructure
+* Migrate from other cloud providers
+* Increase provisioning speed
+* Improve efficiency
+* Reduce risk
+]
+
+---
+Name: Why-Terraform
+Why Terraform?
+-------------------------
+
+.contents[
+* Supports multi-cloud & hybrid infrastructure
+* Migrate from other cloud providers
+* Increase provisioning speed
+* Improve efficiency
+* Reduce risk
+]
+
+---
 name: Live-Demo
 class: center,middle
 Live Demo
 =========================
 ???
-Let's do a live demo! I'm going to walk you through the process of building a very simple application in Azure. First we'll go through the Azure Portal and see how you might deploy a virtual machine manually. Next we'll take a peek at an Azure Resource Manager template. Then we'll deploy our application using Terraform.
+Live demo notes here
 
-First we'll log onto the Azure portal. If you don't have an account yet you can sign up for free. Microsoft will give you $200 USD in Azure credits to use in your first 30 days. Or you can sign up for the Visual Studio Dev Essentials subscription and get $25 a month to use:
+---
+name: Chapter-1
+class: center,middle
+.section[
+Chapter 1  
+Set Up Your Workstation
+]
 
-https://blogs.msdn.microsoft.com/cbtham/2018/05/19/activate-free-azure-cloud-credits-visual-studio-dev-essentials/
+---
+name: workstation-setup-1
+Log Onto Your Workstation
+==========================
 
-Once you've signed in you'll see your landing page in the Portal. One of the things I like about Azure is the ability to have custom dashboards that show different resources. This is my Terraform dashboard. 
+Your instructor will provide you with a workstation URL that looks like this:
 
-Over here on the left side is the main navigation menu where I can view or build different types of cloud resources. Let's say I wanted to build a new virtual machine. I can click this plus symbol and walk through the little quickstart wizard to get a virtual machine stood up. Easy right? So you might be thinking to yourself at this point, why would I need Terraform when I already have this handy GUI here? Let's talk about complexity a bit. The Azure UI has actually hidden away most of the pieces that are required to stand up my VM. 
+.center[.h1[myworkstation01.centralus.cloudapp.azure.com]]
 
-Here's a graph of all the parts that have to be configured to get my single virtual machine running. Look how much complexity is involved even to create a single Virtual Machine.
+.center[![:scale 50%](images/rdp_login.png)]
 
-While using the GUI to stand up one or a handful of machines is useful, what if I need to create dozens or hundreds of machines?  Or build a complex application stack that contains multiple different platforms and components?  Going through the UI over and over, hoping I won't make any mistakes is not an ideal way to do this.  Manual processes quickly become burdensome the more complex my infrastructure needs are.
+Use Remote Desktop (RDP) to access your workstation. Your instructor will provide the username and password.
 
-Ok, so what about ARM templates?  You might have heard of Azure Resource Manager.  These ARM templates are preconfigured settings that allow you to define your Azure infrastructure. ARM templates are defined on JSON, or Javascript Object Notation.  JSON is the defacto standard language of APIs. When computers need to talk to one another across the network they often use JSON formatted data. JSON is great for computers but not so friendly to humans. Let me show you what I mean by that. We're going to play a little game called "Fun with JSON". This also works with AWS Cloudformation and GCP Deployment manager, by the way.
+???
+Note to the instructor - outbound access on TCP port 3389 is required for this to work. Always have someone at the client check that they can access a test workstation *before* you go on site. You don't want to show up for training and find out that RDP access is blocked from the network you're using.
 
-Here's an example of an ARM template that I pulled from the Azure Quickstart repo. JSON has lots of commas and curly braces. These are all required so that the computers reading this code know how to reconstruct the data you want to use to build your infrastructure. 
+RDP is installed by default on almost all Windows corporate PCs and laptops. If your students are on Mac they can download the official Microsoft RDP client from the app store.
 
-I took this template and dropped it into a JSON testing tool, and then I removed a few random commas and curly braces. Everybody makes mistakes, and when you have ten thousand commas and curly braces to look after, it's inevitable you will forget one here and there, or add an extra character where it shouldn't be.
+---
+name: workstation-setup-2
+Run the setup.ps1 script
+==========================
 
-Now I've gone and messed this file up to the point where I don't know what to fix anymore to repair it.  I once had a nightmare, i was in this jungle and all the vines were shaped like curly braces, and there were thorns on the vines, those thorns were all commas.  The JSON jungle.  It wasn't fun.  Let me show you a side-by-side comparision of JSON vs Terraform
+<br><br><br>
+.center[![:scale 50%](images/run_setup.png)]
 
-(Show tf vs json example)
+Right click on the file called 'setup' on your desktop and select 'Run with Powershell'. Type Y for Yes when it asks about changing your execution policy.
 
-This is not to bash on ARM templates. They are super reliable once you get them configured correctly. JSON is just not that fun to build and edit.
+???
+If anyone is curious what this powershell script does, it's disabling windows line endings for git clone, and installing the posh-git powershell extension. We may add more setup steps to this script as time goes by.
 
-Which brings us back to Terraform. Terraform is easy to learn, and easy to edit. It's also built right into your Azure account! Let's get started using Terraform on Azure CloudShell. If you have an Azure account feel free to follow along!
+---
+name: workstation-setup-3
+Open Visual Studio Code
+==========================
+.center[![:scale 70%](images/set_colors_and_icons.png)]
 
-First I will click on the CloudShell icon here to open up a CloudShell prompt. Azure CloudShell is like having a portable workstation with a bunch of tools you can use to build and work with your Azure workloads. The Azure command line is built in, and Terraform and Git are also included. 
+Click the little gear icon in the lower left corner. You can adjust your Color Theme, File Icon Theme, and other settings such as Font Size. Choose a color theme and font size that are comfortable for you.
 
-Once i've opened a command prompt, I can use the `git clone` command to pull some code off of GitHub and into my cloudshell environment.
+???
+I like to demo this part for the students. My personal favorites are Dracula and vscode-icons. Be sure and reload if you add any new extensions or themes.
 
-`git clone https://github.com/scarolan/azure-terraform-beginners`
+---
+name: workstation-setup-4
+Install the Terraform Extension
+==========================
+.center[![:scale 70%](images/install_terraform_extension.png)]
 
-This is a really simple terraform config that I wrote to stand up a single VM with a web page on it. Now I can change into the repo that I just downloaded:
+Click the box shaped icon on the left side menu. This brings you to the Extensions Marketplace. Search for Terraform. Install the first one on the list. Click the 'Reload' button once it is done installing.
 
-The next step is to configure a couple of variables.  For that I can use the handy build in text editor with the `code` command. You're also welcome to use vi, nano, or emacs which are all installed in your cloudshell.
 
-Everyone should pick a different name for their application.  You can also choose a region close to your location if you like.  I'm going to go with centralus.  
+---
+name: Chapter-2
+class: center,middle
+.section[
+Chapter 2  
+My First Terraform Code
+]
 
-Once we have our variables saved we're going to run `terraform init`
+---
+name: Chapter-3
+class: center,middle
+.section[
+Chapter 3  
+terraform plan, apply and destroy
+]
 
-Then we run `terraform plan`
+---
+name: Chapter-4
+class: center,middle
+.section[
+Chapter 4  
+Organize Your Infrastructure Code
+]
 
-And finally we'll run `terraform apply`
+---
+name: Chapter-5
+class: center,middle
+.section[
+Chapter 5  
+Provision and Configure Azure VMs
+]
 
-Now watch here in the portal, we can actually see our resources being built in real-time.  Terraform is quickly and efficiently standing up all of the resources configured in our terraform code.  While that builds let's walk through this Terraform code step by step and explain what's going on.
+---
+name: Chapter-6
+class: center,middle
+.section[
+Chapter 6  
+Manage and Change Infrastructure State
+]
 
-(Explain what is going on in the terraform plan and how all the different parts work together.)
-
-Hey, look our application is up and running!  Let's click on the link here in the outputs and see what we built!
-
-When I'm done here, cleanup is really easy.  All I have to do is run `terraform destroy` and all of my resources will be wiped out.
-
+---
+name: Chapter-7
+class: center,middle
+.section[
+Chapter 7  
+Terraform Enterprise - Built for Teams and Organizations
+]
 
     </textarea>
     <script src="https://remarkjs.com/downloads/remark-latest.min.js" type="text/javascript"></script>

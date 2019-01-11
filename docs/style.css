@@ -1,5 +1,5 @@
 @import url(https://fonts.googleapis.com/css?family=Roboto);
-@import url(https://fonts.googleapis.com/css?family=Uncial+Antiqua);
+@import url(https://fonts.googleapis.com/css?family=Press+Start+2P);
 @import url(https://fonts.googleapis.com/css?family=Noto+Serif:400,700,400italic);
 @import url(https://fonts.googleapis.com/css?family=Inconsolata:400,700,400italic);
 
@@ -28,10 +28,11 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 .section {
-  font-family: 'Uncial Antiqua';
+  font-family: 'Press Start 2P';
   text-shadow: -1px 1px 2px rgb(56, 79, 122);
   font-weight: normal;
   font-size: 2.0em;
+  line-height: 125%;
   margin-bottom: 15px;
   margin-top: 15px;
 	border-top: 3px dotted #e5e5e5;

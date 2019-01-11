@@ -1,19 +1,10 @@
-# azure-vault-mysql
-This directory contains demonstration code for both Terraform and Vault on Microsoft Azure. The Terraform configuration serves two purposes: 
-
-1. To show how easy it is to use Terraform on Azure and
-2. To build the Vault database secrets engine demo.
-
-To set up and run either or both demos, simply follow the instructions below.
+# azure-terraform-vault-workshop
+This repo contains demonstration code for standing up a HashiCorp Vault training lab on Microsoft Azure. You can use it for a half-day Terraform workshop, a half-day Vault workshop or combined day-long workshop covering both. To set up and run either or both workshops, simply follow the instructions below.
 
 ### Setup instructions
-1. Clone or download the code from here: https://github.com/vault-snippets
+1. Clone or download the code from here: https://github.com/scarolan/azure-terraform-vault-workshop
 2. Open a terminal and cd into the vault-azure-mysql-demo directory
-3. Copy the settings in `terraform.tfvars.example` into a `terraform.tfvars` file. Edit the variables to customize your demo.
+3. Copy the settings in `terraform.tfvars.example` into a `terraform.tfvars` file. Set the prefix variable to your name.
 4. Run `terraform plan` and then `terraform apply`
-5. Go get some coffee. It takes roughly 8-10 minutes to provision this demo on Azure.
-6. When the demo setup is done, follow the steps listed in the Terraform output.
-
-### Demo Script
-
-Coming soon!
+5. Go get some coffee. It takes roughly 8-10 minutes to provision this environment on Azure.
+6. When the setup is done, follow the steps listed in the Terraform output.
