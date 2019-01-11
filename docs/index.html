@@ -413,6 +413,15 @@ Click the little gear icon in the lower left corner. You can adjust your Color T
 I like to demo this part for the students. My personal favorites are Dracula and vscode-icons. Be sure and reload if you add any new extensions or themes.
 
 ---
+name: workstation-setup-3a
+Warning Message
+==========================
+<br><br>
+.center[![:scale 70%](images/renderer.png)]
+
+If you see this warning message just select 'Yes'. Visual Studio Code works better with the DOM-based renderer on remote workstations.
+
+---
 name: workstation-setup-4
 Install the Terraform Extension
 ==========================
@@ -420,6 +429,49 @@ Install the Terraform Extension
 
 Click the box shaped icon on the left side menu. This brings you to the Extensions Marketplace. Search for Terraform. Install the first one on the list. Click the 'Reload' button once it is done installing.
 
+---
+name: workstation-setup-5
+Open the Integrated Terminal
+==========================
+.center[![:scale 70%](images/open_terminal.png)]
+
+Open the integrated VSC terminal using the menu or keyboard shortcut. You'll be asked to choose a default shell the first time you do this. Select Powershell as your default shell. You can change this later in your settings if you wish.
+
+---
+name: workstation-setup-6
+Clone the Training Repo
+==========================
+<br><br>
+Run the following commands to clone the training repository from GitHub:
+
+```powershell
+cd ~/Desktop
+git clone https://github.com/scarolan/azure-vault-terraform-workshop
+cd azure-vault-terraform-workshop
+```
+
+Now reload your text editor in the current directory with the code command:
+
+```powershell
+code -r .
+```
+
+---
+name: workstation-setup-7
+Explore the Repository
+==========================
+.center[![:scale 70%](images/terraform_config_files.png)]
+
+Terraform configuration files always end in either a `.tf` or `.tfvars` extension. These files are marked with the purple Terraform icon if you are using the vscode-icons set.
+
+???
+This is a good time to explore the VSC text editor a bit. Show your students that you can do almost everything from within the editor. You can expand and collapse the file browser. Show what each icon on the left side of the GUI does. You can also point out that the terminal can easily be maximized or minimized. 
+
+
+```
+Function prompt {"PS>"}
+terraform --version
+```
 
 ---
 name: Chapter-2
