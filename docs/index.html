@@ -373,7 +373,7 @@ Set Up Your Workstation
 ---
 name: workstation-setup-1
 Log Onto Your Workstation
-==========================
+-------------------------
 
 Your instructor will provide you with a workstation URL that looks like this:
 
@@ -391,7 +391,7 @@ RDP is installed by default on almost all Windows corporate PCs and laptops. If 
 ---
 name: workstation-setup-2
 Run the setup.ps1 script
-==========================
+-------------------------
 
 <br><br><br>
 .center[![:scale 50%](images/run_setup.png)]
@@ -404,7 +404,7 @@ If anyone is curious what this powershell script does, it's disabling windows li
 ---
 name: workstation-setup-3
 Open Visual Studio Code
-==========================
+-------------------------
 .center[![:scale 70%](images/set_colors_and_icons.png)]
 
 Click the little gear icon in the lower left corner. You can adjust your Color Theme, File Icon Theme, and other settings such as Font Size. Choose a color theme and font size that are comfortable for you.
@@ -415,7 +415,7 @@ I like to demo this part for the students. My personal favorites are Dracula and
 ---
 name: workstation-setup-3a
 Warning Message
-==========================
+-------------------------
 <br><br>
 .center[![:scale 70%](images/renderer.png)]
 
@@ -424,7 +424,7 @@ If you see this warning message just select 'Yes'. Visual Studio Code works bett
 ---
 name: workstation-setup-4
 Install the Terraform Extension
-==========================
+-------------------------
 .center[![:scale 70%](images/install_terraform_extension.png)]
 
 Click the box shaped icon on the left side menu. This brings you to the Extensions Marketplace. Search for Terraform. Install the first one on the list. Click the 'Reload' button once it is done installing.
@@ -432,7 +432,7 @@ Click the box shaped icon on the left side menu. This brings you to the Extensio
 ---
 name: workstation-setup-5
 Open the Integrated Terminal
-==========================
+-------------------------
 .center[![:scale 70%](images/open_terminal.png)]
 
 Open the integrated VSC terminal using the menu or keyboard shortcut. You'll be asked to choose a default shell the first time you do this. Select Powershell as your default shell. You can change this later in your settings if you wish.
@@ -440,7 +440,7 @@ Open the integrated VSC terminal using the menu or keyboard shortcut. You'll be 
 ---
 name: workstation-setup-6
 Clone the Training Repo
-==========================
+-------------------------
 <br><br>
 Run the following commands to clone the training repository from GitHub:
 
@@ -458,8 +458,18 @@ code -r .
 
 ---
 name: workstation-setup-7
+Get to Know Visual Studio Code
+-------------------------
+.center[![:scale 70%](images/vsc_tour.png)]
+
+* Left side: File browser, search, version control & more.
+* Lower right: Integrated terminal. Run all commands here.
+* Upper right: Open and edit multiple files in tabs.
+
+---
+name: workstation-setup-8
 Explore the Repository
-==========================
+-------------------------
 .center[![:scale 70%](images/terraform_config_files.png)]
 
 Terraform configuration files always end in either a `.tf` or `.tfvars` extension. These files are marked with the purple Terraform icon if you are using the vscode-icons set.
@@ -467,11 +477,35 @@ Terraform configuration files always end in either a `.tf` or `.tfvars` extensio
 ???
 This is a good time to explore the VSC text editor a bit. Show your students that you can do almost everything from within the editor. You can expand and collapse the file browser. Show what each icon on the left side of the GUI does. You can also point out that the terminal can easily be maximized or minimized. 
 
+---
+name: workstation-setup-10
+Verify That Terraform is Installed
+-------------------------
+<br>
+Run the terraform --version command:
 
-```
-Function prompt {"PS>"}
+```powershell
 terraform --version
 ```
+
+You should see the following output (version number may vary):
+
+```powershell
+PS> terraform --version
+Terraform v0.11.11
+```
+
+---
+name: chapter-1-review
+Chapter 1 Review
+-------------------------
+.contents[
+In this section we:
+* Logged onto your workstation
+* Configured Visual Studio Code
+* Cloned the training git repository
+* Opened VSC in the training folder
+]
 
 ---
 name: Chapter-2
@@ -480,6 +514,28 @@ class: center,middle
 Chapter 2  
 My First Terraform Code
 ]
+
+
+---
+name: workstation-setup-9
+Run Terraform Init
+-------------------------
+<br>
+Run the terraform init command in your Terminal:
+
+```powershell
+terraform init
+```
+
+You should see the following output:
+
+```powershell
+Terraform has been successfully initialized!
+
+You may now begin working with Terraform. Try running "terraform plan" to see any changes that are required for your infrastructure. All Terraform commands should now work.
+
+If you ever set or change modules or backend configuration for Terraform, rerun this command to reinitialize your working directory. If you forget, other commands will detect it and remind you to do so if necessary.
+```
 
 ---
 name: Chapter-3
