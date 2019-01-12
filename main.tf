@@ -110,7 +110,7 @@ demo environments like this one. */
 #   name                         = "${var.prefix}-ip"
 #   location                     = "${var.location}"
 #   resource_group_name          = "${azurerm_resource_group.vaultworkshop.name}"
-#   public_ip_address_allocation = "Dynamic"
+#   allocation_method            = "Dynamic"
 #   domain_name_label            = "${var.prefix}"
 # }
 
@@ -232,7 +232,8 @@ access to our database. */
 
 # data "azurerm_public_ip" "vault-pip" {
 #   name                = "${azurerm_public_ip.vault-pip.name}"
-#   resource_group_name = "${azurerm_virtual_machine.vault.resource_group_name}"
+#   resource_group_name = "${azurerm_resource_group.vaultworkshop.name}"
+#   depends_on          = ["azurerm_virtual_machine.vault"]
 # }
 
 /* Allows the Linux VM to connect to the MySQL database, using the IP address
