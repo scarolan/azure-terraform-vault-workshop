@@ -608,7 +608,7 @@ variable "address_space" {
 
 ---
 name: chapter-2-lab
-Lab Exercise 2A: Set the location variable
+Lab Exercise 2a: Set the location variable
 -------------------------
 Choose the Azure location nearest to you and set the 'location' variable. You can find a list of Azure locations here:
 
@@ -692,7 +692,7 @@ Every terraform resource is structured exactly the same way.
 
 *type* = this is the name of the resource. The first part tells you which provider it belongs to. Example: `azurerm_virtual_machine`. This means the provider is Azure and the specific type of resource is a virtual machine.
 
-*name* = arbitrary name to refer to this resource. Used interally by terraform. This field *cannot* be a variable.
+*name* = arbitrary name to refer to this resource. Used internally by terraform. This field *cannot* be a variable.
 
 ???
 Everything else you want to configure within the resource is going to be sandwiched between the curly braces. These can include strings, lists, and maps.
