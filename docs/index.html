@@ -555,7 +555,7 @@ Output:
 var.prefix
   This prefix will be included in the name of most resources.
 
-  Enter a value: bugsbunny
+* Enter a value: bugsbunny
 
 Refreshing Terraform state in-memory prior to plan...
 The refreshed state will be used to calculate this plan, but will not be
@@ -575,18 +575,18 @@ Rename the terraform.tfvars.example file to terraform.tfvars. Change where it sa
 # Rename or copy this file to terraform.tfvars
 # Prefix must be all lowercase letters, no symbols please.
 
-prefix = "yourname"
+*prefix = "yourname"
 ```
 
 Now you will no longer be prompted to enter your prefix variable when you run terraform commands.
 
-The terraform.tfvars file is your own personal settings file. You can use it to set or override any of the default variables in the variables.tf file.
+The **terraform.tfvars** file is your own personal settings file. You can use it to set or override any of the default variables in the variables.tf file.
 
 ---
 name: defining-variables
 Where are Variables Defined?
 -------------------------
-Open up the variables.tf file and you can see all of the defined variables. Note that some of them have default settings. If you omit the default, the user will be prompted to enter a value.
+Open up the **variables.tf** file and you can see all of the defined variables. Note that some of them have default settings. If you omit the default, the user will be prompted to enter a value.
 
 Here we are *declaring* all the variables that we intend to use in our Terraform code.
 
@@ -628,7 +628,7 @@ chinaeast  - Shanghai, China
 name: chapter-2-lab-answer
 Lab Exercise 2a: Answer
 -------------------------
-Your variables.tf file should now look similar to this:
+Your **terraform.tfvars** file should now look similar to this:
 
 ```tex
 # Rename or copy this file to terraform.tfvars
@@ -1255,14 +1255,14 @@ http://yourname.centralus.cloudapp.azure.com:8200
 ```
 
 ---
-name: chapter-4-lab
-Lab Exercise 4: Break main.tf into smaller files
+name: chapter-4a-lab
+Lab Exercise 4a: Break main.tf into smaller files
 -------------------------
-Take the azurerm_virtual_machine resource out of main.tf and put it into its own file called application.tf. Save both files. Run `terraform apply` again. What happens?
+Take the azurerm_virtual_machine resource out of main.tf and put it into its own file called **vm.tf**. Save both files. Run `terraform apply` again. What happens?
 
 ---
-name: chapter-4-lab-answer
-Lab Exercise 4: Answer
+name: chapter-4a-lab-answer
+Lab Exercise 4a: Answer
 -------------------------
 If you break a large *.tf file down into smaller ones, Terraform doesn't mind. It simply crawls through the directory looking for anything that ends in a .tf extension. All resources in all tf files will be compiled together onto the resource graph before the apply is run.
 
@@ -1274,6 +1274,23 @@ Some extra notes:
 Terraform will *not* crawl into subdirectories looking for tf files. There's also no way to tell terraform which specific tf files to run or not run. The default behavior is to parse any file ending with the .tf or .tfvars extensions in the current directory.
 
 ---
+name: chapter-4b-lab
+Lab Exercise 4b: Automatically Format Your Code
+-------------------------
+<br><br><br>
+Terraform comes with a built-in code formatting command, `terraform fmt`. Add some extra white space and lines to your Terraform code, save the file(s), then run this command in your terminal:
+
+```bash
+terraform fmt
+```
+---
+name: chapter-4b-lab-answer
+Lab Exercise 4b: Answer
+-------------------------
+<br><br><br><br>
+When you run the `terraform fmt` command your code is automatically formatted according to recommended standards. This ensures that your code is always neat and tidy, and eliminates unnecessary code versions caused by empty spaces.
+
+---
 name: chapter-4-review
 Chapter 4 Review
 -------------------------
@@ -1282,6 +1299,7 @@ In this chapter we:
 * Looked at main.tf, variables.tf and outputs.tf
 * Enabled some outputs in our code
 * Refactored our main.tf into smaller parts
+* Learned the `terraform fmt` command
 ]
 
 ---
@@ -1291,6 +1309,96 @@ class: center,middle
 Chapter 5  
 Provision and Configure Azure VMs
 ]
+
+---
+name: intro-to-provisioners
+Using Terraform Provisioners
+-------------------------
+<br><br><br><br>
+Once you've used Terraform to stand up a virtual machine or container, you may wish to configure your operating system and applications. This is where provisioners come in. Terraform supports several different types of provisioners including: Bash, Powershell, Chef, Puppet, Ansible, and more.
+
+.center[https://www.terraform.io/docs/provisioners/index.html]
+
+???
+Terraform works hand-in-hand with these other configuration management tools to install packages, configure applications and change OS settings inside of a virtual machine or container.
+
+---
+name: file-provisioner
+The File Provisioner
+-------------------------
+The Terraform file provisioner copies files from your workstation onto the remote machine. This is one of the simplest ways to put config files into the correct locations on the target machine. In our code we're using the file provisioner to upload a shell script.
+
+```terraform
+provisioner "file" {
+  source      = "files/setup.sh"
+  destination = "/home/${var.admin_username}/setup.sh"
+
+  connection {
+    type     = "ssh"
+    user     = "${var.admin_username}"
+    password = "${var.admin_password}"
+    host     = "${azurerm_public_ip.vault-pip.fqdn}"
+  }
+}
+```
+
+Note the *connection* block of code inside the provisioner block. This is where you configure the method for connecting to the target machine. The file provisioner supports both SSH and WinRM connections.
+
+???
+SSH for linux, WinRM for your windows machines.
+
+---
+name: remote-exec-provisioner
+The Remote Exec Provisioner
+-------------------------
+The remote exec provisioner allows you to execute scripts or other programs on the target host. If its something you can run unattended (for example, a software installer), then you can run it with remote exec.
+
+```terraform
+provisioner "remote-exec" {
+  inline = [
+    "chmod +x /home/${var.admin_username}/setup.sh",
+    "MYSQL_HOST=${var.prefix}-mysql-server VAULT_ADDR=http://127.0.0.1:8200 MYSQLPW=${var.admin_password} /home/${var.admin_username}/setup.sh",
+  ]
+
+  connection {
+    type     = "ssh"
+    user     = "${var.admin_username}"
+    password = "${var.admin_password}"
+    host     = "${azurerm_public_ip.vault-pip.fqdn}"
+  }
+}
+```
+
+In this example we're running two commands. The first changes the permissions of the script to make it executable. The second command runs the script with variables that we defined earlier.
+
+???
+Local exec and remote exec can be used to trigger Puppet or Ansible runs. We do have a dedicated chef provisioner as well. 
+
+---
+name: puppet-chef-ansible
+Terraform & Config Management Tools
+-------------------------
+.center[![:scale 80%](images/cpa.jpg)]
+
+Terraform works well with common config management tools like Chef, Puppet or Ansible. Below are some links with more information on each:
+
+Official Chef Terraform provisioner:  
+https://www.terraform.io/docs/provisioners/chef.html
+
+Run Puppet with 'local-exec':  
+https://www.terraform.io/docs/provisioners/local-exec.html
+
+Terraform and Ansible - Better Together:  
+https://github.com/scarolan/ansible-terraform
+
+---
+name: provisioner-tips
+Terraform Provisioner Tips
+-------------------------
+Terraform provisioners like 'remote exec' are great when you need to run a few simple commands or scripts. For more complex configuration management you'll want a tool like Chef or Ansible. 
+
+Provisioners only run the first time a Terraform run is executed. In this sense, they are not idempotent. If you need ongoing state management of VMs or servers that are long-lived, we recommend using a tool like Chef or Puppet. On the other hand, if you want immutable inE
+
 
 ---
 name: Chapter-6
