@@ -6,10 +6,6 @@
 # export VAULT_TOKEN=root
 # export MYSQL_HOST=bugsbunny-mysql-server
 
-# Install app prerequisites
-sudo apt -y install python3-pip
-sudo pip3 install mysql-connector-python hvac Flask
-
 # Authenticate
 vault login root
 
@@ -39,3 +35,9 @@ vault write lob_a/workshop/database/roles/workshop-app \
     creation_statements="CREATE USER '{{name}}'@'%' IDENTIFIED BY '{{password}}';GRANT SELECT ON *.* TO '{{name}}'@'%';" \
     default_ttl="5m" \
     max_ttl="1h"
+
+# Install app prerequisites
+sudo apt -y install python3-pip
+sudo pip3 install mysql-connector-python hvac Flask
+
+echo "Script complete."
