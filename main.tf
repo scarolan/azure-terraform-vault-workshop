@@ -217,8 +217,8 @@ aging runbooks, tribal knowledge or outdated wiki instructions. Terraform
 is your executable documentation, and it will build infrastructure correctly
 every time. */
 
-# resource "azurerm_mysql_database" "ws-mysql-database" {
-#   name                = "ws-mysql-database"
+# resource "azurerm_mysql_database" "wsmysqldatabase" {
+#   name                = "wsmysqldatabase"
 #   resource_group_name = "${azurerm_resource_group.vaultworkshop.name}"
 #   server_name         = "${azurerm_mysql_server.mysql.name}"
 #   charset             = "utf8"

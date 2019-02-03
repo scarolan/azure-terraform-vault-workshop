@@ -25,7 +25,7 @@ vault write lob_a/workshop/database/config/ws-mysql-database \
     connection_url="{{username}}:{{password}}@tcp(${MYSQL_HOST}.mysql.database.azure.com:3306)/" \
     allowed_roles="workshop-app" \
     username="hashicorp@${MYSQL_HOST}" \
-    password="Password123!"
+    password="Password123^"
 
 # Create our role
 vault write lob_a/workshop/database/roles/workshop-app-long \
