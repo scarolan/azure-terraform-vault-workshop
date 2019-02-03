@@ -8,7 +8,7 @@
 
 # Install app prerequisites
 sudo apt -y install python3-pip
-pip3 install mysql-connector-python hvac Flask
+sudo pip3 install mysql-connector-python hvac Flask
 
 # Authenticate
 vault login root
