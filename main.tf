@@ -97,7 +97,7 @@ resource. Terraform will let you know if you're missing a dependency. */
 #   ip_configuration {
 #     name                          = "${var.prefix}ipconfig"
 #     subnet_id                     = "${azurerm_subnet.subnet.id}"
-#     private_ip_address_allocation = "Dynamic"
+#     allocation_method = "Dynamic"
 #     public_ip_address_id          = "${azurerm_public_ip.vault-pip.id}"
 #   }
 # }
@@ -164,10 +164,23 @@ provisioners including Bash, Powershell and Chef. */
 #     }
 #   }
 
+#   provisioner "file" {
+#     source      = "files/vault_setup.sh"
+#     destination = "/home/${var.admin_username}/vault_setup.sh"
+
+#     connection {
+#       type     = "ssh"
+#       user     = "${var.admin_username}"
+#       password = "${var.admin_password}"
+#       host     = "${azurerm_public_ip.vault-pip.fqdn}"
+#     }
+#   }
+
 #   provisioner "remote-exec" {
 #     inline = [
-#       "chmod +x /home/${var.admin_username}/setup.sh",
+#       "chmod +x /home/${var.admin_username}/*.sh",
 #       "MYSQL_HOST=${var.prefix}-mysql-server VAULT_ADDR=http://127.0.0.1:8200 MYSQLPW=${var.admin_password} /home/${var.admin_username}/setup.sh",
+#       "MYSQL_HOST=${var.prefix}-mysql-server VAULT_ADDR=http://127.0.0.1:8200 MYSQLPW=${var.admin_password} /home/${var.admin_username}/vault_setup.sh",
 #     ]
 
 #     connection {

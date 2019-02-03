@@ -56,7 +56,7 @@ resource "azurerm_network_interface" "vault-nic" {
   ip_configuration {
     name                          = "${var.prefix}ipconfig"
     subnet_id                     = "${azurerm_subnet.subnet.id}"
-    private_ip_address_allocation = "Dynamic"
+    allocation_method = "Dynamic"
     public_ip_address_id          = "${azurerm_public_ip.vault-pip.id}"
   }
 }
@@ -65,7 +65,7 @@ resource "azurerm_public_ip" "vault-pip" {
   name                         = "${var.prefix}-ip"
   location                     = "${var.location}"
   resource_group_name          = "${azurerm_resource_group.vaultworkshop.name}"
-  public_ip_address_allocation = "Dynamic"
+  allocation_method = "Dynamic"
   domain_name_label            = "${var.prefix}"
 }
 
@@ -114,10 +114,23 @@ resource "azurerm_virtual_machine" "vault" {
     }
   }
 
+  provisioner "file" {
+    source      = "files/vault_setup.sh"
+    destination = "/home/${var.admin_username}/vault_setup.sh"
+
+    connection {
+      type     = "ssh"
+      user     = "${var.admin_username}"
+      password = "${var.admin_password}"
+      host     = "${azurerm_public_ip.vault-pip.fqdn}"
+    }
+  }
+
   provisioner "remote-exec" {
     inline = [
-      "chmod +x /home/${var.admin_username}/setup.sh",
+      "chmod +x /home/${var.admin_username}/*.sh",
       "MYSQL_HOST=${var.prefix}-mysql-server VAULT_ADDR=http://127.0.0.1:8200 MYSQLPW=${var.admin_password} /home/${var.admin_username}/setup.sh",
+      "MYSQL_HOST=${var.prefix}-mysql-server VAULT_ADDR=http://127.0.0.1:8200 MYSQLPW=${var.admin_password} /home/${var.admin_username}/vault_setup.sh",
     ]
 
     connection {

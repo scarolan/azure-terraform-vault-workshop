@@ -66,5 +66,5 @@ variable "admin_username" {
 
 variable "admin_password" {
   description = "Administrator password for linux and mysql"
-  default = "Password123^"
+  default = "Password123!"
 }
