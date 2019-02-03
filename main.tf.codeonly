@@ -54,19 +54,19 @@ resource "azurerm_network_interface" "vault-nic" {
   network_security_group_id = "${azurerm_network_security_group.vault-sg.id}"
 
   ip_configuration {
-    name                          = "${var.prefix}ipconfig"
-    subnet_id                     = "${azurerm_subnet.subnet.id}"
-    allocation_method = "Dynamic"
-    public_ip_address_id          = "${azurerm_public_ip.vault-pip.id}"
+    name                 = "${var.prefix}ipconfig"
+    subnet_id            = "${azurerm_subnet.subnet.id}"
+    allocation_method    = "Dynamic"
+    public_ip_address_id = "${azurerm_public_ip.vault-pip.id}"
   }
 }
 
 resource "azurerm_public_ip" "vault-pip" {
-  name                         = "${var.prefix}-ip"
-  location                     = "${var.location}"
-  resource_group_name          = "${azurerm_resource_group.vaultworkshop.name}"
-  allocation_method = "Dynamic"
-  domain_name_label            = "${var.prefix}"
+  name                          = "${var.prefix}-ip"
+  location                      = "${var.location}"
+  resource_group_name           = "${azurerm_resource_group.vaultworkshop.name}"
+  private_ip_address_allocation = "Dynamic"
+  domain_name_label             = "${var.prefix}"
 }
 
 resource "azurerm_virtual_machine" "vault" {
