@@ -1356,8 +1356,9 @@ The remote exec provisioner allows you to execute scripts or other programs on t
 ```terraform
 provisioner "remote-exec" {
   inline = [
-    "chmod +x /home/${var.admin_username}/setup.sh",
-    "MYSQL_HOST=${var.prefix}-mysql-server VAULT_ADDR=http://127.0.0.1:8200 MYSQLPW=${var.admin_password} /home/${var.admin_username}/setup.sh",
+    "chmod +x /home/${var.admin_username}/*.sh",
+    "sleep 30",
+    "MYSQL_HOST=${var.prefix}-mysql-server /home/${var.admin_username}/setup.sh"
   ]
 
   connection {
@@ -1395,10 +1396,44 @@ https://github.com/scarolan/ansible-terraform
 name: provisioner-tips
 Terraform Provisioner Tips
 -------------------------
-Terraform provisioners like 'remote exec' are great when you need to run a few simple commands or scripts. For more complex configuration management you'll want a tool like Chef or Ansible. 
+Terraform provisioners like remote-exec are great when you need to run a few simple commands or scripts. For more complex configuration management you'll want a tool like Chef or Ansible. 
 
-Provisioners only run the first time a Terraform run is executed. In this sense, they are not idempotent. If you need ongoing state management of VMs or servers that are long-lived, we recommend using a tool like Chef or Puppet. On the other hand, if you want immutable inE
+Provisioners only run the first time a Terraform run is executed. In this sense, they are not idempotent. If you need ongoing state management of VMs or servers that are long-lived, we recommend using a tool like Chef or Puppet.
 
+On the other hand, if you want immutable infrastructure you should consider using our [Packer](https://packer.io) tool.
+
+---
+name: chapter-5-lab
+Lab Exercise 5: Add a Provisioner Command
+-------------------------
+<br>
+Let's add a simple command to our **remote-exec** block of code.  You can use the 'cowsay' command to output messages into your Terraform log:
+
+```terraform
+inline = [
+  "chmod +x /home/${var.admin_username}/*.sh",
+  "sleep 30",
+  "MYSQL_HOST=${var.prefix}-mysql-server /home/${var.admin_username}/setup.sh",
+* "cowsay Mooooooo!"
+]
+```
+
+Run `terraform apply` again and see what happens. Did your virtual machine get rebuilt? Why?
+
+Hint: read up on the [terraform taint](https://www.terraform.io/docs/commands/taint.html) command.
+
+---
+name: chapter-5-lab-answer
+Lab Exercise 5: Answer
+-------------------------
+The remote-exec provisioner is a [Creation Time](https://www.terraform.io/docs/provisioners/index.html#creation-time-provisioners) Provisioner. It does not run every time you update scripts or code within the remote-exec block. If you need to completely rebuild a virtual machine, you can use the **`terraform taint`** command to mark it for a rebuild. Go ahead and taint your Azure VM and rebuild it before the next chapter.
+
+```bash
+terraform taint azurerm_virtual_machine.vault
+terraform apply -auto-approve
+```
+
+.center[![:scale 60%](images/hashimoo.png)]
 
 ---
 name: Chapter-6
@@ -1409,12 +1444,197 @@ Manage and Change Infrastructure State
 ]
 
 ---
+name: terraform-state
+Terraform State
+-------------------------
+Terraform is a _stateful_ application. This means that it keeps track of everything you build inside of a **state file**. You may have noticed the terraform.tfstate and terraform.tfstate.backup files that appeared inside your working directory.
+
+The state file is Terraform's source of record for everything it knows about.
+
+```json
+{
+  "version": 3,
+  "terraform_version": "0.11.11",
+  "serial": 6,
+  "lineage": "983e6899-96f4-ce60-744e-7123bb1fc315",
+  "modules": [
+      {
+          "path": [
+              "root"
+          ],
+          "outputs": {
+              "MySQL_Server_FQDN": {
+                  "sensitive": false,
+                  "type": "string",
+                  "value": "labtest1-mysql-server.mysql.database.azure.com"
+```
+
+---
+name: terraform-refresh
+Terraform Refresh
+-------------------------
+Sometimes infrastructure may be changed outside of Terraform's control. Virtual machines could be deleted, firewall rules changed, hardware failures could occur causing your infrastructure to look different than what's in the state file.
+
+The state file represents the *last known* state of the infrastructure. If you'd like to check and see if the state file still matches what you built, you can use the **terraform refresh** command. 
+
+Note that this does *not* update your infrastructure, it simply updates the state file.
+
+```bash
+terraform refresh
+```
+
+---
+name: change-existing-infra
+Changing Existing Infrastructure
+-------------------------
+During the earlier sections, you learned to write code in small increments, then test your changes with the `terraform apply` command. Whenever you run a plan or apply, Terraform reconciles three different data sources:
+
+1.  What you wrote in your code
+2.  The state file
+3.  What actually exists
+
+Terraform does its best to add, delete, change, or replace existing resources based on what is in your *.tf files. Here are the four different things that can happen to each resource during a plan/apply:
+
+```tex
++   create
+-   destroy
+-/+ replace
+~   update in-place
+```
+
+---
+name: chapter-6-lab
+Lab Exercise 6: State Quiz
+-------------------------
+<br>
+.center[![:scale 100%](images/state_table_empty.png)]
+
+What will happen in each scenario when you run `terraform apply`?
+
+---
+name: chapter-6-lab-answer
+Lab Exercise 6: Answer
+-------------------------
+<br>
+.center[![:scale 100%](images/state_table_full.png)]
+
+It's important to understand how Terraform views code, state, and reality. If you're ever unsure about what will happen you can run `terraform plan` to find out.
+
+---
 name: Chapter-7
 class: center,middle
 .section[
 Chapter 7  
 Terraform Enterprise - Built for Teams and Organizations
 ]
+
+---
+name: why-tfe-1
+Terraform Enterprise
+-------------------------
+.center[![:scale 60%](images/TFE_GUI.png)]
+
+Terraform Enterprise is a SaaS or on-premise application that provides the following features:
+
+---
+name: why-tfe-2
+Terraform Enterprise
+-------------------------
+.center[![:scale 60%](images/TFE_GUI.png)]
+
+Terraform Enterprise is a SaaS or on-premise application that provides the following features:
+
+* Easy Mode - UI integration with Version Control System
+
+---
+name: why-tfe-3
+Terraform Enterprise
+-------------------------
+.center[![:scale 60%](images/TFE_GUI.png)]
+
+Terraform Enterprise is a SaaS or on-premise application that provides the following features:
+
+* Easy Mode - UI integration with Version Control System
+* Advanced Users - API driven workflow with CI/CD pipeline
+
+---
+name: why-tfe-4
+Terraform Enterprise
+-------------------------
+.center[![:scale 60%](images/TFE_GUI.png)]
+
+Terraform Enterprise is a SaaS or on-premise application that provides the following features:
+
+* Easy Mode - UI integration with Version Control System
+* Advanced Users - API driven workflow with CI/CD pipeline
+* Centralized Terraform state management
+
+---
+name: why-tfe-5
+Terraform Enterprise
+-------------------------
+.center[![:scale 60%](images/TFE_GUI.png)]
+
+Terraform Enterprise is a SaaS or on-premise application that provides the following features:
+
+* Easy Mode - UI integration with Version Control System
+* Advanced Users - API driven workflow with CI/CD pipeline
+* Centralized Terraform state management
+* Private Module Registry for sharing code
+
+---
+name: why-tfe-6
+Terraform Enterprise
+-------------------------
+.center[![:scale 60%](images/TFE_GUI.png)]
+
+Terraform Enterprise is a SaaS or on-premise application that provides the following features:
+
+* Easy Mode - UI integration with Version Control System
+* Advanced Users - API driven workflow with CI/CD pipeline
+* Centralized Terraform state management
+* Private Module Registry for sharing code
+* Sentinel policy enforcement
+
+---
+name: why-tfe-7
+Terraform Enterprise
+-------------------------
+.center[![:scale 60%](images/TFE_GUI.png)]
+
+Terraform Enterprise is a SaaS or on-premise application that provides the following features:
+
+* Easy Mode - UI integration with Version Control System
+* Advanced Users - API driven workflow with CI/CD pipeline
+* Centralized Terraform state management
+* Private Module Registry for sharing code
+* Sentinel policy enforcement
+* Single Sign-On with SAML
+
+---
+name: why-tfe-8
+Terraform Enterprise
+-------------------------
+.center[![:scale 60%](images/TFE_GUI.png)]
+
+Terraform Enterprise is a SaaS or on-premise application that provides the following features:
+
+* Easy Mode - UI integration with Version Control System
+* Advanced Users - API driven workflow with CI/CD pipeline
+* Centralized Terraform state management
+* Private Module Registry for sharing code
+* Sentinel policy enforcement
+* Single Sign-On with SAML
+* Secure variable and API key management
+
+---
+name: Live-Demo
+class: center,middle
+Live Demo
+=========================
+???
+Live demo notes here
+
 
     </textarea>
     <script src="https://remarkjs.com/downloads/remark-latest.min.js" type="text/javascript"></script>
