@@ -26,3 +26,9 @@ WantedBy=multi-user.target
 EOF
 
 sudo systemctl start vault
+
+echo "Setting up environment variables..."
+echo "export VAULT_ADDR=http://localhost:8200 >> $HOME/.bashrc"
+echo "export VAULT_TOKEN=root >> $HOME/.bashrc"
+echo "export MYSQL_HOST=${MYSQL_HOST} >> $HOME/.bashrc"
+echo "Vault installation complete."

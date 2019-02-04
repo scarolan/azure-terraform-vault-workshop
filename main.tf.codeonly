@@ -129,9 +129,8 @@ resource "azurerm_virtual_machine" "vault" {
   provisioner "remote-exec" {
     inline = [
       "chmod +x /home/${var.admin_username}/*.sh",
-      "sleep 60",
-      "/home/${var.admin_username}/setup.sh",
-      "MYSQL_HOST=${var.prefix}-mysql-server VAULT_TOKEN=root VAULT_ADDR=http://127.0.0.1:8200 MYSQLPW=${var.admin_password} /home/${var.admin_username}/vault_setup.sh"
+      "sleep 30",
+      "MYSQL_HOST=${var.prefix}-mysql-server /home/${var.admin_username}/setup.sh"
     ]
 
     connection {
