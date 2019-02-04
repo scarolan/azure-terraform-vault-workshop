@@ -34,8 +34,8 @@ vault write lob_a/workshop/database/roles/workshop-app \
     max_ttl="1h"
 
 # Install app prerequisites
-sudo apt -y install python3-pip
-# For some reason this hangs the terraform run.
-# sudo pip3 install mysql-connector-python hvac Flask
+sudo apt-get -y update > /dev/null 2>&1
+sudo apt install -y python3-pip > /dev/null 2>&1
+sudo pip3 install mysql-connector-python hvac Flask > /dev/null 2>&1
 
 echo "Script complete."
