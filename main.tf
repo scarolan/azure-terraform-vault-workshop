@@ -104,7 +104,6 @@ the demo environment. Terraform supports several different types of
 provisioners including Bash, Powershell and Chef. */
 # resource "azurerm_virtual_machine" "vault" {
 #   name                = "${var.prefix}-vault"
-#   depends_on          = ["azurerm_mysql_firewall_rule.vault-mysql"]
 #   location            = "${var.location}"
 #   resource_group_name = "${azurerm_resource_group.vaultworkshop.name}"
 #   vm_size             = "${var.vm_size}"
@@ -154,6 +153,7 @@ provisioners including Bash, Powershell and Chef. */
 #     inline = [
 #       "chmod +x /home/${var.admin_username}/*.sh",
 #       "/home/${var.admin_username}/setup.sh",
+#       "sleep 60",
 #       "MYSQL_HOST=${var.prefix}-mysql-server VAULT_TOKEN=root VAULT_ADDR=http://127.0.0.1:8200 MYSQLPW=${var.admin_password} /home/${var.admin_username}/vault_setup.sh"
 #     ]
 #     connection {
