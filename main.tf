@@ -152,8 +152,8 @@ provisioners including Bash, Powershell and Chef. */
 #   provisioner "remote-exec" {
 #     inline = [
 #       "chmod +x /home/${var.admin_username}/*.sh",
-#       "MYSQL_HOST=${var.prefix}-mysql-server VAULT_ADDR=http://127.0.0.1:8200 MYSQLPW=${var.admin_password} /home/${var.admin_username}/setup.sh",
-#       "MYSQL_HOST=${var.prefix}-mysql-server VAULT_ADDR=http://127.0.0.1:8200 MYSQLPW=${var.admin_password} /home/${var.admin_username}/vault_setup.sh",
+#       "/home/${var.admin_username}/setup.sh",
+#       "MYSQL_HOST=${var.prefix}-mysql-server VAULT_TOKEN=root VAULT_ADDR=http://127.0.0.1:8200 MYSQLPW=${var.admin_password} /home/${var.admin_username}/vault_setup.sh"
 #     ]
 #     connection {
 #       type     = "ssh"

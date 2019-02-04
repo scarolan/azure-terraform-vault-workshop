@@ -6,9 +6,6 @@
 # export VAULT_TOKEN=root
 # export MYSQL_HOST=bugsbunny-mysql-server
 
-# Authenticate
-vault login root
-
 # Enable Auditing
 vault audit enable file file_path=/${HOME}/vault.log
 
@@ -38,6 +35,7 @@ vault write lob_a/workshop/database/roles/workshop-app \
 
 # Install app prerequisites
 sudo apt -y install python3-pip
-sudo pip3 install mysql-connector-python hvac Flask
+# For some reason this hangs the terraform run.
+# sudo pip3 install mysql-connector-python hvac Flask
 
 echo "Script complete."
