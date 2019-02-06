@@ -15,10 +15,10 @@ to dynamically set our name and location. Variables are usually defined in
 the variables.tf file, and you can override the defaults in your 
 own terraform.tfvars file. */
 
-# resource "azurerm_resource_group" "vaultworkshop" {
-#   name     = "${var.prefix}-vault-workshop"
-#   location = "${var.location}"
-# }
+resource "azurerm_resource_group" "vaultworkshop" {
+  name     = "${var.prefix}-vault-workshop"
+  location = "${var.location}"
+}
 
 /* The next resource is a Virtual Network. We can dynamically place it into the
 resource group without knowing its name ahead of time. Terraform handles all
@@ -206,10 +206,10 @@ https://www.terraform.io/docs/providers/azurerm/r/mysql_server.html */
 #   ssl_enforcement     = "Disabled"
 
 #   sku {
-#     name     = "B_Gen4_2"
+#     name     = "B_Gen5_2"
 #     capacity = 2
 #     tier     = "Basic"
-#     family   = "Gen4"
+#     family   = "Gen5"
 #   }
 
 #   storage_profile {
@@ -245,6 +245,7 @@ access to our database. */
 
 # data "azurerm_public_ip" "vault-pip" {
 #   name                = "${azurerm_public_ip.vault-pip.name}"
+#   depends_on          = ["azurerm_virtual_machine.vault"]
 #   resource_group_name = "${azurerm_virtual_machine.vault.resource_group_name}"
 # }
 

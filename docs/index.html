@@ -21,9 +21,10 @@ Build Azure Resources With Infrastructure as Code
 ???
 Welcome to the beginner's guide to Terraform on Azure. This slide deck is written entirely in Markdown language, which means you can make edits or additions, then submit a pull request to add your changes to the master copy. The slide deck uses the Remark JS engine to power it: https://github.com/gnab/remark
 
-Here are some helpful keyboard shortcuts for the instructor or participant:
-⬆ ⬇ ⬅ ➡ - Navigate back and forth
-P         - Toggle presenter view
+Here are some helpful keyboard shortcuts for the instructor or participant:  
+
+⬆ ⬇ ⬅ ➡ - Navigate back and forth  
+P         - Toggle presenter view  
 C         - Pop an external window for presentation
 
 Instructor notes are included in plain text, narrative parts are in **bold**. You can use the narrative quotes or change them to suit your own presentation style. 
@@ -88,7 +89,7 @@ Let's look at a few different ways you could provision a new Azure Virtual Machi
 ]
 
 ???
-**"Has anyone got experience using Azure? How do most of us normally get started? That's right, we log onto the Azure Portal and start clicking around. All of the major cloud providers make this part really easy. You get your account, log on and start clicking buttons. Let's take a peek at what that looks like..."***
+**"Has anyone got experience using Azure? How do most of us normally get started? That's right, we log onto the Azure Portal and start clicking around. All of the major cloud providers make this part really easy. You get your account, log on and start clicking buttons. Let's take a peek at what that looks like..."**
 
 ---
 name: Azure-Portal-Provision
@@ -517,7 +518,7 @@ Open Visual Studio Code
 Click the little gear icon in the lower left corner. You can adjust your Color Theme, File Icon Theme, and other settings such as Font Size. Choose a color theme and font size that are comfortable for you.
 
 ???
-I like to demo this part for the students. My personal favorites are Dracula and vscode-icons. Be sure and reload if you add any new extensions or themes.
+I like to demo this part for the students. My personal favorites are Dracula and vscode-icons. Be sure and reload if you add any new extensions or themes. Remember that some of these folks have never used Visual Studio Code before. Know where the font, color, and icon settings are and show them how to change these.
 
 ---
 name: workstation-setup-3a
@@ -527,6 +528,9 @@ Warning Message
 .center[![:scale 70%](images/renderer.png)]
 
 If you see this warning message just select 'Yes'. Visual Studio Code works better with the DOM-based renderer on remote workstations.
+
+???
+The reason for this is VSC wants to use your graphics card on your local laptop if its available. This doesn't work so well in the cloud.
 
 ---
 name: workstation-setup-4
@@ -543,6 +547,9 @@ Open the Integrated Terminal
 .center[![:scale 70%](images/open_terminal.png)]
 
 Open the integrated VSC terminal using the menu or keyboard shortcut. You'll be asked to choose a default shell the first time you do this. Select Powershell as your default shell. You can change this later in your settings if you wish.
+
+???
+I've seen this popup sometimes take two tries to save properly. It might be a bug. In any case it shouldn't matter because the default is Powershell which is what we want.
 
 ---
 name: workstation-setup-6
@@ -562,6 +569,9 @@ Now reload your text editor in the current directory with the code command:
 ```powershell
 code -r .
 ```
+
+???
+**"This git command is copying a remote repository full of Terraform code onto your workstation. After that we change directories into the repo, and reload our text editor with the current folder opened. Visual Studio Code has a built in file browser which is essential for keeping track of large Terraform projects."**
 
 ---
 name: workstation-setup-7
@@ -622,6 +632,43 @@ Chapter 2
 My First Terraform
 ]
 
+???
+**"Now that you have terraform installed and working with Azure, we can do a few dry runs before building real infrastructure. Follow along carefully, copying and pasting the commands on each slide into your terminal as we go."**
+
+---
+name: terraform-help
+Run Terraform Help
+-------------------------
+Run the `terraform help` command in your Terminal:
+
+Command:
+```powershell
+terraform help
+```
+
+Output:
+```tex
+Usage: terraform [-version] [-help] <command> [args]
+
+  The available commands for execution are listed below.
+  The most common, useful commands are shown first, followed by
+  less common or more advanced commands. If you're just getting
+  started with Terraform, stick with the common commands. For the
+  other commands, please read the help and docs before usage.
+  
+  Common commands:
+      plan               Generate and show an execution plan
+      graph              Create a visual graph of Terraform resources
+      init               Initialize a Terraform working directory
+      console            Interactive console for Terraform interpolations
+      fmt                Rewrites config files to canonical format
+      get                Download and install modules for the configuration
+      ...
+```
+???
+This is a good command to know. Terraform help will reveal all the available subcommands.
+
+
 ---
 name: terraform-init
 Run Terraform Init
@@ -635,6 +682,8 @@ terraform init
 
 Output:
 ```tex
+* provider.azurerm: version = "~> 1.21"
+
 Terraform has been successfully initialized!
 
 You may now begin working with Terraform. Try running "terraform plan" to see
@@ -647,6 +696,9 @@ other commands will detect it and remind you to do so if necessary.
 ```
 
 Terraform fetches any required providers and modules and stores them in the .terraform directory. You can take a peek inside that directory where you'll see the plugins folder.
+
+???
+**"Terraform has an extendible core plus plugin architecture. You download the core program, terraform, then it fetches plugins and modules that are required for this specific build. Because our code contains the keyword azurerm, terraform automatically knows to fetch that provider for you."**
 
 ---
 name: terraform-plan
@@ -672,13 +724,37 @@ persisted to local or remote state storage.
 ```
 
 ???
-The terraform plan command says "No Changes" because we haven't defined any infrastructure yet. 
+**"terraform plan is a dry run command. We're not actually building anything yet, Terraform is just telling is what it would do if we ran it for real."**
+
+---
+name: terraform-plan-2
+Run Terraform Plan
+-------------------------
+<br><br>
+When you ran `terraform plan` and entered your name, you should have gotten some output that looks like this:
+
+```tex
+Terraform will perform the following actions:
+
+  + azurerm_resource_group.vaultworkshop
+      id:       <computed>
+      location: "centralus"
+      name:     "bugsbunny-vault-workshop"
+      tags.%:   <computed>
+
+
+Plan: 1 to add, 0 to change, 0 to destroy.
+```
+
+Note that we are not actually building anything yet. This is just a dry run, showing us what would happen if we applied our change.
 
 ---
 name: set-prefix
 Set the Prefix Variable
 -------------------------
-Rename the terraform.tfvars.example file to terraform.tfvars. Change where it says "yourname" to your own name. No spaces or special characters please. Keep it all lowercase. Save the file.
+Rename the **terraform.tfvars.example** file to **terraform.tfvars**.  
+
+Change where it says "yourname" to your own name. No spaces or special characters please. Keep it all lowercase. Save the file.
 
 ```tex
 # Rename or copy this file to terraform.tfvars
@@ -690,6 +766,9 @@ Rename the terraform.tfvars.example file to terraform.tfvars. Change where it sa
 Now you will no longer be prompted to enter your prefix variable when you run terraform commands.
 
 The **terraform.tfvars** file is your own personal settings file. You can use it to set or override any of the default variables in the variables.tf file.
+
+???
+**"Let's go ahead and set this variable in a file so we don't have to type it in every time we run terraform commands. You're going to simply rename the terraform.tfvars.example file to terraform.tfvars. Terraform knows to look for files that end in .tf or .tfvars. You can right click the file right inside VSC to rename it."**
 
 ---
 name: defining-variables
@@ -715,6 +794,12 @@ variable "address_space" {
 }
 ```
 
+???
+**"If you're curious where all these variables are defined, you can see them all in the _variables.tf_ file. Here we are simply defining all the available settings, and optionally declaring some default values. These defaults are what terraform will use if your user doesn't override them with their own settings."**
+
+Q. Where could you override these defaults?  
+A. In the terraform.tfvars file, or optionally on the command line or via environment variables. The most common approach is to use a tfvars file.
+
 ---
 name: chapter-2-lab
 Lab Exercise 2a: Set the location variable
@@ -733,10 +818,14 @@ southindia - Chennai, India
 chinaeast  - Shanghai, China
 ```
 
+???
+Have the students do this one on their own. They can choose any region, please let us know if you find any regions that do not support the VM type we use in this workshop.
+
 ---
 name: chapter-2-lab-answer
 Lab Exercise 2a: Answer
 -------------------------
+<br><br><br>
 Your **terraform.tfvars** file should now look similar to this:
 
 ```tex
@@ -746,6 +835,8 @@ Your **terraform.tfvars** file should now look similar to this:
 prefix = "yourname"
 location = "uksouth"
 ```
+
+If you wish you can run `terraform plan` again to see a different result. Notice how your location setting has overridden the default setting.
 
 ---
 name: chapter-2-review
@@ -767,11 +858,15 @@ Chapter 3
 terraform plan, apply and destroy
 ]
 
+???
+**"In this chapter we'll actually build real infrastructure using our sample code."**
+
 ---
 name: main.tf
 Terraform Comments
 -------------------------
-Open the main.tf file in the VSC file browser. You'll notice that the entire file is full of comments. There are two types of comments:
+<br><br>
+Open the main.tf file in the VSC file browser. You'll notice that most of the file is full of comments. There are two types of comments:
 
 Line Comments begin with an octothorpe<sup>*</sup>, or pound symbol: #
 ```hcl
@@ -784,7 +879,7 @@ Block comments are contained between /\* and \*/ symbols.
 Block comments can span multiple lines.
 The comment ends with this symbol: */
 ```
-<br><br><br><br>
+<br><br>
 .smalltext[
 \* Yes, it really is called an [octothorpe](https://www.merriam-webster.com/dictionary/octothorpe).
 ]
@@ -810,9 +905,10 @@ Everything else you want to configure within the resource is going to be sandwic
 name: resources-building-blocks
 Resources - Terraform Building Blocks
 -------------------------
-Find the first resource in the main.tf file on lines 18-21. Highlight these four lines and uncomment them.
+<br><br><br>
+Find the first resource in the main.tf file on lines 18-21. These lines are already uncommented for you.
 
-You can do this with the _Edit > Toggle Line Comment_ menu, or by simply pressing `CTRL-/`
+You can toggle comments with the _Edit > Toggle Line Comment_ menu, or by simply highlighting some text and pressing `CTRL-/`. 
 
 ```hcl
 resource "azurerm_resource_group" "vaultworkshop" {
@@ -821,9 +917,14 @@ resource "azurerm_resource_group" "vaultworkshop" {
 }
 ```
 
-Resources are the smallest building blocks of Terraform. Think of them as declarative statements about what you want to build. Save the main.tf file.
+???
+**"Why don't you try commenting out this code, then uncommenting it. This is the easy way to write code. Just highlight, uncomment, save the file.**
 
-Note that the resource contains references to the two variables we set in the previous chapter, location and prefix. These will be replaced when we run terraform commands. Variables are always enclosed in a dollar sign and curly braces.
+**Resources are the smallest building blocks of Terraform. Think of them as declarative statements about what you want to build. Save the main.tf file.**
+
+**Note that the resource contains references to the two variables we set in the previous chapter, location and prefix. These will be replaced when we run terraform commands. Variables are always enclosed in a dollar sign and curly braces."**
+
+I like to flip over to my own workstation and actually show them how to do this. If you run your own workstation in a separate virtual desktop or window, you can easily flip back and forth between slides and live code.
 
 ---
 name: terraform-plan
@@ -886,9 +987,9 @@ You'll see a graph pop up in a new tab. This is a map of all the resources and d
 .center[![:scale 100%](images/resource_graph.png)]
 
 ???
-This is the graph for the fully completed workshop lab once it is built. 
+**"This is the graph for the fully completed workshop lab once it is built.**
 
-You might have noticed that we have a bunch of variables that we aren't using yet. Don't worry, we will use them as the workshop progresses. You can click on any of the nodes in the graph to jump to the specific part of your code where it is being referenced. Any time you want to update the graph simply use the Command Palette to regenerate it.
+**You might have noticed that we have a bunch of variables that we aren't using yet. Don't worry, we will use them as the workshop progresses. You can click on any of the nodes in the graph to jump to the specific part of your code where it is being referenced. Any time you want to update the graph simply use the Command Palette to regenerate it.**"
 
 ---
 name: terraform-apply
@@ -941,7 +1042,7 @@ azurerm_resource_group.vaultworkshop: Refreshing state... (ID: /subscriptions/c0
 
 ------------------------------------------------------------------------
 
-No changes. Infrastructure is up-to-date.
+*No changes. Infrastructure is up-to-date.
 
 This means that Terraform did not detect any differences between your
 configuration and real physical resources that exist. As a result, no
@@ -956,6 +1057,9 @@ name: chapter-3a-lab
 Lab Exercise 3a: Change Your Location
 -------------------------
 Change the location variable in your terraform.tfvars file to a different Azure location. Re-run the `terraform plan` and `terraform apply` commands. What happens?
+
+???
+This is a good spot for a mini discussion on how Terraform is idempotent, and declarative. You declare what you want (eg, one resource group in a particular region, with a specific name), and then terraform goes and carries out your command, even if you're changing something that already exists. In this example, we have to tear down the existing resource group and build a new one.
 
 ---
 name: chapter-3a-lab-answer
@@ -998,6 +1102,9 @@ Do you really want to destroy all resources?
 Destroy complete! Resources: 0 destroyed.
 ```
 
+???
+Terraform can just as easily destroy infrastructure as create it. With great power comes great responsibility!
+
 ---
 name: we-can-rebuild-him
 We Can Rebuild Him
@@ -1030,6 +1137,9 @@ https://www.terraform.io/docs/providers/azurerm/r/resource_group.html
 
 Edit your main.tf file and add a tag to the resource. Set the name of the tag to 'environment' and the value to 'Production'.
 
+???
+Don't just give the answer away here. Let people struggle a little bit and try to actually read the documentation. You can literally copy the example right from the docs into your code. Wait a few minutes until everyone's had a chance to try and do this on their own.
+
 ---
 name: chapter-3b-lab-answer
 Lab Exercise 3b: Answer
@@ -1055,6 +1165,9 @@ azurerm_resource_group.vaultworkshop: Modifying... (ID: /subscriptions/c0a607b2-
 azurerm_resource_group.vaultworkshop: Modifications complete after 0s (ID: /subscriptions/c0a607b2-6372-4ef3-abdb-...ourceGroups/yourname-vault-workshop)
 ```
 
+???
+Some resources can be non-destructively changed in place. Ask your class what they think some of those resources might be? Good examples are tags and security group rules.
+
 ---
 name: add-virtual-network
 Add a Virtual Network
@@ -1072,6 +1185,30 @@ resource "azurerm_virtual_network" "vnet" {
 Note the syntax for ensuring that this virtual network is placed into the resource group we created earlier.
 
 Optional: regenerate the Terraform Graph to see how it changes.
+
+???
+Hop over to your own workstation and regenerate the terraform graph. Point out that we now have a Virtual Network, that depends on the resource group. How did Terraform know these things are connected? 
+
+---
+name: dependency-mapping
+Terraform Dependency Mapping
+-------------------------
+<br><br>
+Terraform can automatically keep track of dependencies for you. Let's take a look at the two resources in our main.tf file. Note the highlighted line in the azurerm_virtual_network resource. This is how we tell one resource to refer to another in terraform.
+
+```terraform
+resource "azurerm_resource_group" "vaultworkshop" {
+  name     = "${var.prefix}-vault-workshop"
+  location = "${var.location}"
+}
+
+resource "azurerm_virtual_network" "vnet" {
+  name                = "${var.prefix}-vnet"
+  location            = "${azurerm_resource_group.vaultworkshop.location}"
+  address_space       = ["${var.address_space}"]
+* resource_group_name = "${azurerm_resource_group.vaultworkshop.name}"
+}
+```
 
 ---
 name: terraform-apply-again
@@ -1100,6 +1237,9 @@ azurerm_virtual_network.vnet: Creation complete after 10s (ID: /subscriptions/c0
 
 Apply complete! Resources: 1 added, 0 changed, 0 destroyed.
 ```
+
+???
+The auto-approve flag is so we don't have to type 'yes' every time we run terraform.
 
 ---
 name: chapter-3c-lab
