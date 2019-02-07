@@ -6,4 +6,5 @@ remark.macros.scale = function (percentage) {
     ratio: '4:3',
     highlightStyle: 'tomorrow-night-bright',
     highlightLines: 'true',
+    sourceUrl: 'slides-tf.md'
   });
