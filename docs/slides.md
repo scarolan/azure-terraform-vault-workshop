@@ -1,3 +1,14 @@
+<!---
+Azure Terraform Vault Workshop - Part 1
+Terraform for Beginners on Azure
+
+This slide presentation is stored as Markdown code, specifically using the RemarkJS engine to render it. All standard markdown tags are supported, and you can also use some HTML within this document. 
+
+If you need to change the look and feel of the slide deck just use the style.css and remark_settings.js files to suit your needs. The content in this file is picked up by index.html when the page is loaded.
+
+HTML comments like this one will show up in the source code, but not in the slides or speaker notes.
+--->
+
 name: Azure-Terraform-Vault-Workshop
 class: center,middle,title-slide
 count: false
