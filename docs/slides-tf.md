@@ -1,7 +1,6 @@
 name: Azure-Terraform-Vault-Workshop
 class: center,middle,title-slide
 count: false
-count: false
 ![:scale 80%](images/tfaz.png)
 .titletext[
 Azure Terraform Workshop]
