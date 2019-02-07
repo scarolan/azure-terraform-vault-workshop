@@ -9,6 +9,7 @@ If you need to change the look and feel of the slide deck just use the style.css
 HTML comments like this one will show up in the source code, but not in the slides or speaker notes.
 --->
 
+---
 name: Azure-Terraform-Vault-Workshop
 class: center,middle,title-slide
 count: false
