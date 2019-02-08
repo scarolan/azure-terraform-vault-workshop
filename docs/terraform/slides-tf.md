@@ -20,6 +20,8 @@ HTML comments like this one will show up in the source code, but not in the slid
 
 Welcome to the beginner's guide to Terraform on Azure. This slide deck is written entirely in Markdown language, which means you can make edits or additions, then submit a pull request to add your changes to the master copy. To make edits to the slide deck simply fork this repository: https://github.com/scarolan/azure-terraform-vault-workshop, edit the Markdown files, and submit a pull request with your changes.
 
+The Markdown content is contained in the docs/terraform and docs/vault directories.
+
 Here are some helpful keyboard shortcuts for the instructor or participant:  
 
 ⬆ ⬇ ⬅ ➡ - Navigate back and forth  
@@ -45,9 +47,9 @@ Use this slide to introduce yourself, give a little bit of your background story
 
 The favorite text editor question is a good ice breaker, but perhaps more importantly it gives you an immediate gauge of how technical your users are.  
 
-**"There are no wrong answers to this question. Unless you say Notepad. Friends don't let friends write code in Notepad."**
+**There are no wrong answers to this question. Unless you say Notepad. Friends don't let friends write code in Notepad.**
 
-**"If you don't have a favorite text editor, that's okay! We've brought prebuilt cloud workstations that have Visual Studio Code already preinstalled. VSC is a free programmer's text editor for Microsoft, and it has great Terraform support. Most of this workshop will be simply copying and pasting code, so if you're not a developer don't fret. Terraform is easy to learn and fun to work with."**
+**If you don't have a favorite text editor, that's okay! We've brought prebuilt cloud workstations that have Visual Studio Code already preinstalled. VSC is a free programmer's text editor for Microsoft, and it has great Terraform support. Most of this workshop will be simply copying and pasting code, so if you're not a developer don't fret. Terraform is easy to learn and fun to work with.**
 
 ---
 name: Table-of-Contents
@@ -69,7 +71,7 @@ Table of Contents
 ???
 This workshop should take roughly three hours to complete. It is ideal for a half-day workshop and can be paired with Vault content for a full day of training. The infrastructure participants build during the morning session is used as the lab environment for the afternoon session. So you can do a half day of Terraform and/or Vault, or both of them together.
 
-**"Here is our agenda for today's training. We'll be taking breaks after each major section or every hour, whichever comes first. This part of the workshop will take us through lunch break, then we'll cover Vault during the afternoon session."**
+**Here is our agenda for today's training. We'll be taking breaks after each major section or every hour, whichever comes first. This part of the workshop will take us through lunch break, then we'll cover Vault during the afternoon session.**
 
 ---
 name: How-to-Provision-a-VM
@@ -88,7 +90,7 @@ Let's look at a few different ways you could provision a new Azure Virtual Machi
 ]
 
 ???
-**"Has anyone got experience using Azure? How do most of us normally get started? That's right, we log onto the Azure Portal and start clicking around. All of the major cloud providers make this part really easy. You get your account, log on and start clicking buttons. Let's take a peek at what that looks like..."**
+**Has anyone got experience using Azure? How do most of us normally get started? That's right, we log onto the Azure Portal and start clicking around. All of the major cloud providers make this part really easy. You get your account, log on and start clicking buttons. Let's take a peek at what that looks like...**
 
 ---
 name: Azure-Portal-Provision
@@ -97,7 +99,7 @@ Method 1: Azure Portal (GUI)
 ![:scale 100%](images/azure_provision.png)
 
 ???
-**"This should look familiar if you've ever used Azure. You click on Virtual Machines, and you'll see a whole list of different base images you can use to provision your VM. Some of these are provided by Microsoft, others are provided by third parties in the marketplace. You either search or browse for the thing you need, and click on it. Easy."**
+**This should look familiar if you've ever used Azure. You click on Virtual Machines, and you'll see a whole list of different base images you can use to provision your VM. Some of these are provided by Microsoft, others are provided by third parties in the marketplace. You either search or browse for the thing you need, and click on it. Easy.**
 
 ---
 name: Azure-Portal-Provision-2
@@ -106,7 +108,7 @@ Method 1: Azure Portal (GUI)
 ![:scale 100%](images/azure_provision_3.png)
 
 ???
-**"Once you've chosen your base OS image, you will fill in some more details like the size of the VM, which location you want to run it in, and the initial administrator password. The Azure portal can be handy for spinning up individual VMs and dev or test environments. The good news is it's really easy to spin up infrastructure this way. The bad news is that it doesn't scale, and chances are nobody's keeping track of what got built."**
+**Once you've chosen your base OS image, you will fill in some more details like the size of the VM, which location you want to run it in, and the initial administrator password. The Azure portal can be handy for spinning up individual VMs and dev or test environments. The good news is it's really easy to spin up infrastructure this way. The bad news is that it doesn't scale, and chances are nobody's keeping track of what got built.**
 
 ---
 name: Azure-Resource-Manager
@@ -136,13 +138,13 @@ Method 2: Azure Resource Manager (ARM) Template
 ARM templates provide a consistent and reliable way to provision Azure resources. JSON is easy for computers to read, but can be challenging for humans to edit and troubleshoot.
 
 ???
-**"Which brings us to method #2, Azure Resource Manager templates, also known as ARM templates. Have any of you used ARM templates? What's that experience like?**
+**Which brings us to method #2, Azure Resource Manager templates, also known as ARM templates. Have any of you used ARM templates? What's that experience like?**
 
-**ARM templates are written in JSON, which stands for JavaScript Object Notation. It is an open-standard format for transmitting data between computers. And don't get me wrong, JSON is great. If you happen to be a computer. As it turns out computers are really good at reading these files full of key-value pairs and lists.**
+**ARM templates are written in JSON, which stands for JavaScript Object Notation. It is an open-standard format for transmitting data between computers. And don't get me wrong, JSON is great. If you happen to be a computer. Computers are really good at reading these files full of key-value pairs and lists.**
 
 **The problem is that editing and maintaining huge JSON files is hard for humans. Because JSON is not a programming language, you'll end up writing a lot more lines of complex code that is hard to understand and change.**
 
-**ARM templates - easy for computers to read, hard for humans to troubleshoot and maintain."**
+**ARM templates - easy for computers to read, hard for humans to troubleshoot and maintain.**
 
 ---
 name: Provision-with-Terraform-2
@@ -162,7 +164,7 @@ resource "azure_virtual_machine" "web" {
 .center[Example terraform code for building an Azure VM.]
 
 ???
-**"And finally we have option #3, Terraform. Terraform uses a Domain Specific Language, or DSL that is designed to be both human-friendly and machine-readable. This is an example snippet of Terraform code. Now watch as I flip back to the previous slide. Would you rather have to write and maintain this complex and messy JSON, or this simple, compact terraform code?"**
+**And finally we have option #3, Terraform. Terraform uses a Domain Specific Language, or DSL that is designed to be both human-friendly and machine-readable. This is an example snippet of Terraform code. Now watch as I flip back to the previous slide. Would you rather have to write and maintain this complex and messy JSON, or this simple, compact terraform code?**
 
 Advance back to the previous slide to illustrate the difference between JSON and equivalent Terraform. 
 
@@ -182,11 +184,11 @@ What is Terraform?
 ]
 
 ???
-**"So what exactly _is_ Terraform? Terraform is the DNA of your hybrid infrastructure. Terraform code is written in HCL, or HashiCorp Config Language. It is the only programming language designed specifically for provisioning infrastructure on any platform.**
+**So what exactly _is_ Terraform? Terraform is the DNA of your hybrid infrastructure. Terraform code is written in HCL, or HashiCorp Config Language. It is the only programming language designed specifically for provisioning infrastructure on any platform.**
 
 **Do any of you have a wiki or set of runbooks that contain provisioning instructions? Think for a moment about that wiki. Now I want you to imagine the date stamp, when was this thing last edited? Let's say it was four years ago. Do you think maybe something could have changed in the past four years?**
 
-**It sounds funny but the truth is your wiki is the obituary of the last known state of your infrastructure. One of the main reasons to use terraform is because it is self-documenting. The code itself explains every step required to build this infrastructure, and therefore it is always up to date."**
+**It sounds funny but the truth is your wiki is the obituary of the last known state of your infrastructure. One of the main reasons to use terraform is because it is self-documenting. The code itself explains every step required to build this infrastructure, and therefore it is always up to date.**
 
 ---
 name: IaC
@@ -200,18 +202,18 @@ Infrastructure as Code (IaC) is the process of managing and provisioning cloud i
 ]
 
 ???
-"**You might be thinking...why can't I just do this by hand? After all the Azure portal is really easy, and I can just stand up my infrastructure manually. Here's why:**
+**You might be thinking...why can't I just do this by hand? After all the Azure portal is really easy, and I can just stand up my infrastructure manually. Here's why:**
 
 **Terraform ensures that when you build any type of infrastructure that it gets built correctly every single time, exactly the same way. Let's try a thought experiment. If I gave every single one of you the same build document and asked you to set up a server, I guarantee there will be differences in those machines when you hand them over. They may not be major differences, but over time these can pile up and cause all sorts of uncertainty and issues in your environment.**
 
-**When you require hands on keyboards (or mice), and you start making changes and manual steps on your infrastructure, you've lost the automation battle before it even starts. Even a single manual step can slow down your delivery schedule, and introduce unnecessary risk and change to your environments."**
+**When you require hands on keyboards (or mice), and you start making changes and manual steps on your infrastructure, you've lost the automation battle before it even starts. Even a single manual step can slow down your delivery schedule, and introduce unnecessary risk and change to your environments.**
 
 ---
 name: IaC2
 Infrastructure as Code Allows Us To...
 -------------------------
 ???
-**"We sometimes call this philosophy 'Infrastructure as Code', or the practice of expressing all of our provisioning steps as machine-readable code and variables. This is also known as the...**"
+**We sometimes call this philosophy 'Infrastructure as Code', or the practice of expressing all of our provisioning steps as machine-readable code and variables. This is also known as the...**
 
 ---
 name: IaC2
@@ -222,7 +224,7 @@ Infrastructure as Code Allows Us To...
 * Provide a codified workflow to create infrastructure
 ]
 ???
-**"...codified workflow. When you code-ify all of your manual steps, you'll gain several advantages that allow you to provision faster, with more efficiency, while reducing risk."**
+**...codified workflow. When you code-ify all of your manual steps, you'll gain several advantages that allow you to provision faster, with more efficiency, while reducing risk.**
 
 
 ---
@@ -235,7 +237,7 @@ Infrastructure as Code Allows Us To...
 * Change and update existing infrastructure
 ]
 ???
-**"One of the main benefits of IaC is the ability to change and update what you built. There are many tools that allow you to provision infrastructure. This is sometimes called 'Day 0' of operations. The real challenge is managing Day N. What happens when you need to alter the infrastructure you built? Maybe you need to destroy or recreate part or all of it? Are you prepared to maintain and care for this infrastructure, without causing any downtime? Because Terraform is a _stateful_ tool, it can help you keep track of your infrastructure and change it with minimal impact."**
+**One of the main benefits of IaC is the ability to change and update what you built. There are many tools that allow you to provision infrastructure. This is sometimes called 'Day 0' of operations. The real challenge is managing Day N. What happens when you need to alter the infrastructure you built? Maybe you need to destroy or recreate part or all of it? Are you prepared to maintain and care for this infrastructure, without causing any downtime? Because Terraform is a _stateful_ tool, it can help you keep track of your infrastructure and change it with minimal impact.**
 
 ---
 name: IaC2
@@ -248,11 +250,11 @@ Infrastructure as Code Allows Us To...
 * Safely test changes using `terraform plan` in dry run mode
 ]
 ???
-**"Do you remember that scene in the movie Jurassic Park, where Samuel L Jackson turns around and says 'hold onto your butts' as he pushes his untested code change into production? Every sysadmin has had that feeling at one time or another. I really hope this works...**
+**Do you remember that scene in the movie Jurassic Park, where Samuel L Jackson turns around and says 'hold onto your butts' as he pushes his untested code change into production? Every sysadmin has had that feeling at one time or another. I really hope this works...**
 
 **What if instead we had a way to safely test every change that went into production with a dry run? What would actually happen if I ran this code right now? Terraform comes with a built in dry run mode that allows you to visualize exactly what would happen if you pushed the apply button right now. This is a valuable tool for sysadmins and operations teams who prize stability and uptime.**
 
-**Unexpected changes in the terraform plan output can be investigated _before_ they go into production.**"
+**Unexpected changes in the terraform plan output can be investigated _before_ they go into production.**
 
 ---
 name: IaC2
@@ -267,7 +269,7 @@ Infrastructure as Code Allows Us To...
 ]
 
 ???
-**"Terraform allows you to automate manual processes and build continuous integration or continuous delivery pipelines. Imagine you had a pipeline for creating hardened machine images. Perhaps you have another pipeline for testing your infrastructure build process. These might be chained to other CI/CD application pipelines where the application is deployed into your tested, hardened infrastructure. Think of API driven infrastructure builds, written in a simple langage everybody can use and understand."**
+**Terraform allows you to automate manual processes and build continuous integration or continuous delivery pipelines. Imagine you had a pipeline for creating hardened machine images. Perhaps you have another pipeline for testing your infrastructure build process. These might be chained to other CI/CD application pipelines where the application is deployed into your tested, hardened infrastructure. Think of API driven infrastructure builds, written in a simple langage everybody can use and understand.**
 
 ---
 name: IaC2
@@ -283,7 +285,7 @@ Infrastructure as Code Allows Us To...
 ]
 
 ???
-**"As you expand your terraform usage, you'll have certain patterns and pieces of your infrastructure that you'd like to re-use. Maybe you want your network security to be set up a certain way, every time. Or perhaps someone wrote a great Terraform config for your web application. Terraform supports custom modules, which are simply packages of pre-built Terraform code that others can use. You can use Terraform modules to avoid repetition, enforce security, and ensure that standards are followed."**
+**As you expand your terraform usage, you'll have certain patterns and pieces of your infrastructure that you'd like to re-use. Maybe you want your network security to be set up a certain way, every time. Or perhaps someone wrote a great Terraform config for your web application. Terraform supports custom modules, which are simply packages of pre-built Terraform code that others can use. You can use Terraform modules to avoid repetition, enforce security, and ensure that standards are followed.**
 
 ---
 name: IaC2
@@ -300,7 +302,7 @@ Infrastructure as Code Allows Us To...
 ]
 
 ???
-**"Terraform Enterprise also supports policy enforcement. You can create a list of dos and do-nots for your users and ensure that people don't build things they shouldn't, or introduce unnecessary risk into your environments. For example, you may have a policy that states that servers should not be exposed to the public internet. Because all your infrastructure is stored as code, you can quickly analyze that code to see if it's breaking any of the rules, preventing the bad behavior *before* the infrastructure gets built."**
+**Terraform Enterprise also supports policy enforcement. You can create a list of dos and do-nots for your users and ensure that people don't build things they shouldn't, or introduce unnecessary risk into your environments. For example, you may have a policy that states that servers should not be exposed to the public internet. Because all your infrastructure is stored as code, you can quickly analyze that code to see if it's breaking any of the rules, preventing the bad behavior *before* the infrastructure gets built.**
 
 ---
 name: IaC2
@@ -318,7 +320,7 @@ Infrastructure as Code Allows Us To...
 ]
 
 ???
-**"Now that all your infrastructure is stored in a source code repository, it's very easy for multiple users and teams to collaborate on it. Developer needs a new feature? He or she can easily adjust the source code and send the change back to the operations folks for review. Terraform is a universal language that is understood by both developers and operations teams."**
+**Now that all your infrastructure is stored in a source code repository, it's very easy for multiple users and teams to collaborate on it. Developer needs a new feature? He or she can easily adjust the source code and send the change back to the operations folks for review. Terraform is a universal language that is understood by both developers and operations teams.**
 
 ---
 name: IaC-Tools
@@ -330,9 +332,9 @@ Other Infrastructure as Code Tools
 These tools work well for configuring the operating system and application. They are not purpose-built for provisioning cloud infrastructure and platform services.
 
 ???
-**"Some of you might be thinking, that sounds great but what about this other tool that I use? Why shouldn't I just use Ansible since we already have that? Or my people only do Powershell. These are all great tools. But none of them are specifically designed for provisioning tasks.**
+**Some of you might be thinking, that sounds great but what about this other tool that I use? Why shouldn't I just use Ansible since we already have that? Or my people only do Powershell. These are all great tools. But none of them are specifically designed for provisioning tasks.**
 
-**Chef, Puppet and Ansible all work great in the context of your operating system and applications. It's true that you can do some cloud provisioning with each of these tools, but none of them really work as well as Terraform. And conversely, HashiCorp doesn't have a configuration management tool. Terraform works great with all of these tools.**"
+**Chef, Puppet and Ansible all work great in the context of your operating system and applications. It's true that you can do some cloud provisioning with each of these tools, but none of them really work as well as Terraform. And conversely, HashiCorp doesn't have a configuration management tool. Terraform works great with all of these tools.**
 
 ---
 name: Native-Tools
@@ -346,13 +348,13 @@ Each cloud has its own YAML or JSON based provisioning tool.
 Terraform can be used across *all* major cloud providers and VM hypervisors.
 
 ???
-**"Every major cloud provider has their own JSON or YAML based provisioning tool. But all of them are written in YAML or JSON. And if you learn one of these systems, guess what, the others are completely different. Now if you want to have a multi-cloud strategy you have to learn three separate provisioning systems. With Terraform you are using the same language, the same simple syntax on all three of these cloud providers."**
+**Every major cloud provider has their own JSON or YAML based provisioning tool. But all of them are written in YAML or JSON. And if you learn one of these systems, guess what, the others are completely different. Now if you want to have a multi-cloud strategy you have to learn three separate provisioning systems. With Terraform you are using the same language, the same simple syntax on all three of these cloud providers.**
 
 ---
 name: Config-Hell
 .center[![:scale 90%](images/Config_Hell.jpg)]
 ???
-**"This is a fun web comic. Those of you who have spent hours poking at a nested JSON template, trying to figure out which layer of curly braces you are in will understand this..."**
+**This is a fun web comic. Those of you who have spent hours poking at a nested JSON template, trying to figure out which layer of curly braces you are in will understand this...**
 
 ---
 Name: Terraform-vs-JSON
@@ -385,7 +387,7 @@ Why Terraform?
 ![:scale 100%](images/azure-loves-terraform.png)
 
 ???
-**"Microsoft has invested significant resources to ensure that Azure users have a first-class experience when using Terraform to provision on Azure. Your friendly Microsoft solutions architect is happy to support you if you choose to use Terraform, especially if you are adopting a multi-cloud strategy. Terraform is even built right into Azure CloudShell. You can use Terraform with zero setup, right from your web browser."**
+**Microsoft has invested significant resources to ensure that Azure users have a first-class experience when using Terraform to provision on Azure. Your friendly Microsoft solutions architect is happy to support you if you choose to use Terraform, especially if you are adopting a multi-cloud strategy. Terraform is even built right into Azure CloudShell. You can use Terraform with zero setup, right from your web browser.**
 
 ---
 Name: Why-Terraform-on-Azure
@@ -397,7 +399,7 @@ Why Terraform on Azure?
 ]
 
 ???
-**"Why specifcially should you use Terraform on Azure? The first reason is that Terraform supports your hybrid or multi-cloud strategy. If you need to build some infrastructure on-prem, and some in Azure, Terraform is a natural fit. Your technical staff only has to learn a single language to be able to provision in either environment."**
+**Why specifcially should you use Terraform on Azure? The first reason is that Terraform supports your hybrid or multi-cloud strategy. If you need to build some infrastructure on-prem, and some in Azure, Terraform is a natural fit. Your technical staff only has to learn a single language to be able to provision in either environment.**
 
 ---
 Name: Why-Terraform-on-Azure
@@ -410,7 +412,7 @@ Why Terraform on Azure?
 ]
 
 ???
-**"Terraform is also great for migrating between cloud providers. Let's say you wanted to move some workloads from AWS to Azure. The code changes in Terraform would be much easier to implement than they would via ARM templates. I was able to migrate a simple demo application from one cloud to another in a few short hours, because there was almost no learning curve. Terraform code looks the same no matter where you run it."**
+**Terraform is also great for migrating between cloud providers. Let's say you wanted to move some workloads from AWS to Azure. The code changes in Terraform would be much easier to implement than they would via ARM templates. I was able to migrate a simple demo application from one cloud to another in a few short hours, because there was almost no learning curve. Terraform code looks the same no matter where you run it.**
 
 ---
 Name: Why-Terraform-on-Azure
@@ -424,7 +426,7 @@ Why Terraform on Azure?
 ]
 
 ???
-**"It's not unusual to see provisioning times drop from days or weeks to hours or minutes when users adopt Terraform. Ineffective manual steps and change approvals can be replaced with fast code pipelines that have rigorous testing and security built right in. Now instead of waiting for days for a change request to be approved, users can self-provision their infrastructure without bottlenecks or slow approval processes."**
+**It's not unusual to see provisioning times drop from days or weeks to hours or minutes when users adopt Terraform. Ineffective manual steps and change approvals can be replaced with fast code pipelines that have rigorous testing and security built right in. Now instead of waiting for days for a change request to be approved, users can self-provision their infrastructure without bottlenecks or slow approval processes.**
 
 ---
 Name: Why-Terraform-on-Azure
@@ -439,7 +441,7 @@ Why Terraform on Azure?
 ]
 
 ???
-**"Have you heard the saying 'measure twice, cut once?'? Terraform forces your operations teams to be disciplined and consistent with every single build. Have a change or setting that was overlooked during the build? Now you can immediately correct that mistake inside the code, so that a particular step never gets missed again. All future builds will contain the change. This can also improve relations between developers and operations, because the contract is clear. What gets built is always defined in the code, and never left to guesswork or manual processes."**
+**Have you heard the saying 'measure twice, cut once?'? Terraform forces your operations teams to be disciplined and consistent with every single build. Have a change or setting that was overlooked during the build? Now you can immediately correct that mistake inside the code, so that a particular step never gets missed again. All future builds will contain the change. This can also improve relations between developers and operations, because the contract is clear. What gets built is always defined in the code, and never left to guesswork or manual processes.**
 
 ---
 Name: Why-Terraform-on-Azure
@@ -455,7 +457,7 @@ Why Terraform on Azure?
 ]
 
 ???
-**"Every modern IT organization has to deal with risk. It's a balancing act between security and usability. You can make it so secure nobody can use it, or on the other end you have a free for all where users can do whatever they want, but are putting the entire cloud account in jeopardy due to risky behavior. Terraform allows you to reduce risk by abstracting your users away from the web UI or API. Instead we provide a safe, auditable abstraction layer that lets users get their work done in a secure and safe way, that doesn't grant unnecessary privileged access."**
+**Every modern IT organization has to deal with risk. It's a balancing act between security and usability. You can make it so secure nobody can use it, or on the other end you have a free for all where users can do whatever they want, but are putting the entire cloud account in jeopardy due to risky behavior. Terraform allows you to reduce risk by abstracting your users away from the web UI or API. Instead we provide a safe, auditable abstraction layer that lets users get their work done in a secure and safe way, that doesn't grant unnecessary privileged access.**
 
 ---
 name: Live-Demo
@@ -463,11 +465,19 @@ class: center,middle
 Live Demo
 =========================
 ???
-**"Let's do a short demo! I'm going to show you how easy it can be to provision infrastructure in Azure. I'll do the demo on one of the workstations that you'll be using for this training."**
+**Let's do a short demo! I'm going to show you how easy it can be to provision infrastructure in Azure. I'll do the demo on one of the workstations that you'll be using for this training.**
 
-Take a few minutes and walk through standing up the azure-terraform-vault-workshop terraform on your own workstation. 
+NOTE: We tested this in the eastus region and it took around five minutes to build the lab environment. You'll probably want to pre-bake your demo environment and just show the terraform output and Vault server.
 
-TODO: Add a talk track for this demo.
+Here is some sample dialog you can use for the demo. Keep it short and sweet. Nobody wants a long boring lecture.
+
+**This is a workstation just like the ones you'll be using for today's workshops. I'm going to run a terraform apply command to build out the lab environment. We're actually cheating a little bit here, as we prebaked most of the environment before class to save us some time. Just like your favorite cooking show!**
+
+**You can see the results of the terraform run here in my terminal window. These outputs are showing me the URL of the Vault server I just built. And if we pop over here to the Azure portal you'll see all of the different parts of my lab environment.**
+
+**This is Infrastructure as code. By the end of today's training you'll be able to create your own infrastructure using Terraform.**
+
+**During the morning workshop session each of you will be building a Vault server that you will use after lunch, during the Vault training.**
 
 ---
 name: Chapter-1
@@ -508,6 +518,8 @@ Right click on the file called 'setup' on your desktop and select 'Run with Powe
 ???
 If anyone is curious what this powershell script does, it's disabling windows line endings for git clone, and installing the posh-git powershell extension. We may add more setup steps to this script as time goes by.
 
+**This handy script does a few setup and housekeeping commands for us. Right click on the setup.ps1 file and select the "Run with Powershell" option. It may take a minute or two to finish.**
+
 ---
 name: workstation-setup-3
 Open Visual Studio Code
@@ -518,6 +530,8 @@ Click the little gear icon in the lower left corner. You can adjust your Color T
 
 ???
 I like to demo this part for the students. My personal favorites are Dracula and vscode-icons. Be sure and reload if you add any new extensions or themes. Remember that some of these folks have never used Visual Studio Code before. Know where the font, color, and icon settings are and show them how to change these.
+
+**Let's take a moment to move in and get comfortable. You can click on this little gear icon in the lower left corner to access your settings. Pick a color theme and font size that are easy on the eyes. You can also adjust your icons. I like the vscode-icons set, which has an icon for almost every type of file you can imagine.**
 
 ---
 name: workstation-setup-3a
@@ -538,6 +552,9 @@ Install the Terraform Extension
 .center[![:scale 70%](images/install_terraform_extension.png)]
 
 Click the box shaped icon on the left side menu. This brings you to the Extensions Marketplace. Search for Terraform. Install the first one on the list. Click the 'Reload' button once it is done installing.
+
+???
+**The terraform extension gives you syntax highlighting, code completion, and the ability to run terraform commands right from the command palette.**
 
 ---
 name: workstation-setup-5
@@ -570,7 +587,7 @@ code -r .
 ```
 
 ???
-**"This git command is copying a remote repository full of Terraform code onto your workstation. After that we change directories into the repo, and reload our text editor with the current folder opened. Visual Studio Code has a built in file browser which is essential for keeping track of large Terraform projects."**
+**This git command is copying a remote repository full of Terraform code onto your workstation. After that we change directories into the repo, and reload our text editor with the current folder opened. Visual Studio Code has a built in file browser which is essential for keeping track of large Terraform projects.**
 
 ---
 name: workstation-setup-7
@@ -582,6 +599,9 @@ Get to Know Visual Studio Code
 * Lower right: Integrated terminal. Run all commands here.
 * Upper right: Open and edit multiple files in tabs.
 
+???
+**This is your learning environment. You can do everything from within Visual Studio Code. On the left is your file browser, for managing, renaming, moving or opening files. On the upper right we have our text editor. And down here is the terminal, this is where we'll be running our terraform commands.**
+
 ---
 name: workstation-setup-8
 Explore the Repository
@@ -591,7 +611,7 @@ Explore the Repository
 Terraform configuration files always end in either a `.tf` or `.tfvars` extension. These files are marked with the purple Terraform icon if you are using the vscode-icons set.
 
 ???
-This is a good time to explore the VSC text editor a bit. Show your students that you can do almost everything from within the editor. You can expand and collapse the file browser. Show what each icon on the left side of the GUI does. You can also point out that the terminal can easily be maximized or minimized. 
+This is a good time to explore the VSC text editor a bit. Show your students that you can do almost everything from within the editor. You can expand and collapse the file browser. Show what each icon on the left side of the GUI does. You can also point out that the terminal can easily be maximized or minimized.
 
 ---
 name: workstation-setup-10
@@ -610,6 +630,9 @@ You should see the following output (version number may vary):
 PS> terraform --version
 Terraform v0.11.11
 ```
+
+???
+**We've preinstalled terraform on your workstation for you. You can also download terraform and install it on your own laptop or desktop computer if you wish. Terraform is shipped as a single zip file. You download it, unzip it, and put it somewhere you can run it. Easy.**
 
 ---
 name: chapter-1-review
@@ -632,7 +655,7 @@ My First Terraform
 ]
 
 ???
-**"Now that you have terraform installed and working with Azure, we can do a few dry runs before building real infrastructure. Follow along carefully, copying and pasting the commands on each slide into your terminal as we go."**
+**Now that you have terraform installed and working with Azure, we can do a few dry runs before building real infrastructure. Follow along carefully, copying and pasting the commands on each slide into your terminal as we go.**
 
 ---
 name: terraform-help
@@ -665,8 +688,7 @@ Usage: terraform [-version] [-help] <command> [args]
       ...
 ```
 ???
-This is a good command to know. Terraform help will reveal all the available subcommands.
-
+**This is a good command to know. Terraform help will reveal all the available subcommands.**
 
 ---
 name: terraform-init
@@ -697,7 +719,7 @@ other commands will detect it and remind you to do so if necessary.
 Terraform fetches any required providers and modules and stores them in the .terraform directory. You can take a peek inside that directory where you'll see the plugins folder.
 
 ???
-**"Terraform has an extendible core plus plugin architecture. You download the core program, terraform, then it fetches plugins and modules that are required for this specific build. Because our code contains the keyword azurerm, terraform automatically knows to fetch that provider for you."**
+**Terraform has an extendible architecture. You download the core program, terraform, then it fetches plugins and modules that are required for your code. Because our code contains the keyword azurerm, terraform automatically knows to fetch that provider for you.**
 
 ---
 name: terraform-plan
@@ -723,14 +745,16 @@ persisted to local or remote state storage.
 ```
 
 ???
-**"terraform plan is a dry run command. We're not actually building anything yet, Terraform is just telling is what it would do if we ran it for real."**
+**terraform plan is a dry run command. We're not actually building anything yet, Terraform is just telling is what it would do if we ran it for real.**
+
+**If you're curious, how are we authenticating to Azure? We've saved some Azure credentials on your workstation as environment variables. You can also use Terraform directly from Azure cloudshell. Terraform is preinstalled in cloudshell and doesn't require any authentication or special configuration.**
 
 ---
 name: terraform-plan-2
 Run Terraform Plan
 -------------------------
 <br><br>
-When you ran `terraform plan` and entered your name, you should have gotten some output that looks like this:
+When you ran `terraform plan` and entered your name, you should see output that looks like this:
 
 ```tex
 Terraform will perform the following actions:
@@ -745,7 +769,7 @@ Terraform will perform the following actions:
 Plan: 1 to add, 0 to change, 0 to destroy.
 ```
 
-Note that we are not actually building anything yet. This is just a dry run, showing us what would happen if we applied our change.
+**Note that we are not actually building anything yet. This is just a dry run, showing us what would happen if we applied our change.**
 
 ---
 name: set-prefix
@@ -767,7 +791,7 @@ Now you will no longer be prompted to enter your prefix variable when you run te
 The **terraform.tfvars** file is your own personal settings file. You can use it to set or override any of the default variables in the variables.tf file.
 
 ???
-**"Let's go ahead and set this variable in a file so we don't have to type it in every time we run terraform commands. You're going to simply rename the terraform.tfvars.example file to terraform.tfvars. Terraform knows to look for files that end in .tf or .tfvars. You can right click the file right inside VSC to rename it."**
+**Let's go ahead and set this variable in a file so we don't have to type it in every time we run terraform commands. You're going to simply rename the terraform.tfvars.example file to terraform.tfvars. Terraform knows to look for files that end in .tf or .tfvars. You can right click the file right inside VSC to rename it.**
 
 ---
 name: defining-variables
@@ -794,7 +818,7 @@ variable "address_space" {
 ```
 
 ???
-**"If you're curious where all these variables are defined, you can see them all in the _variables.tf_ file. Here we are simply defining all the available settings, and optionally declaring some default values. These defaults are what terraform will use if your user doesn't override them with their own settings."**
+**If you're curious where all these variables are defined, you can see them all in the _variables.tf_ file. Here we are simply defining all the available settings, and optionally declaring some default values. These defaults are what terraform will use if your user doesn't override them with their own settings.**
 
 Q. Where could you override these defaults?  
 A. In the terraform.tfvars file, or optionally on the command line or via environment variables. The most common approach is to use a tfvars file.
@@ -835,7 +859,7 @@ prefix = "yourname"
 location = "uksouth"
 ```
 
-If you wish you can run `terraform plan` again to see a different result. Notice how your location setting has overridden the default setting.
+**If you wish you can run `terraform plan` again to see a different result. Notice how your location setting has overridden the default setting.**
 
 ---
 name: chapter-2-review
@@ -858,7 +882,7 @@ terraform plan, apply and destroy
 ]
 
 ???
-**"In this chapter we'll actually build real infrastructure using our sample code."**
+**In this chapter we'll actually build real infrastructure using our sample code.**
 
 ---
 name: main.tf
@@ -917,11 +941,11 @@ resource "azurerm_resource_group" "vaultworkshop" {
 ```
 
 ???
-**"Why don't you try commenting out this code, then uncommenting it. This is the easy way to write code. Just highlight, uncomment, save the file.**
+**Why don't you try commenting out this code, then uncommenting it. This is the easy way to write code. Just highlight, uncomment, save the file.**
 
 **Resources are the smallest building blocks of Terraform. Think of them as declarative statements about what you want to build. Save the main.tf file.**
 
-**Note that the resource contains references to the two variables we set in the previous chapter, location and prefix. These will be replaced when we run terraform commands. Variables are always enclosed in a dollar sign and curly braces."**
+**Note that the resource contains references to the two variables we set in the previous chapter, location and prefix. These will be replaced when we run terraform commands. Variables are always enclosed in a dollar sign and curly braces.**
 
 I like to flip over to my own workstation and actually show them how to do this. If you run your own workstation in a separate virtual desktop or window, you can easily flip back and forth between slides and live code.
 
@@ -957,7 +981,7 @@ Plan: 1 to add, 0 to change, 0 to destroy.
 ```
 
 ???
-Terraform plan is a dry run. This is a good time to talk about how Terraform can give you a preview of what would be built if you actually ran the apply subcommand. Terraform plan gives you a chance to have other people review and approve your changes before you apply them.
+**Terraform plan is a dry run. It gives you a chance to have other people review and approve your changes before you apply them.**
 
 ---
 name: terraform-graph
@@ -986,9 +1010,11 @@ You'll see a graph pop up in a new tab. This is a map of all the resources and d
 .center[![:scale 100%](images/resource_graph.png)]
 
 ???
-**"This is the graph for the fully completed workshop lab once it is built.**
+**This is the graph for the fully completed workshop lab once it is built.**
 
-**You might have noticed that we have a bunch of variables that we aren't using yet. Don't worry, we will use them as the workshop progresses. You can click on any of the nodes in the graph to jump to the specific part of your code where it is being referenced. Any time you want to update the graph simply use the Command Palette to regenerate it.**"
+**You might have noticed that we have a bunch of variables that we aren't using yet. Don't worry, we will use them as the workshop progresses. You can click on any of the nodes in the graph to jump to the specific part of your code where it is being referenced. Any time you want to update the graph simply use the Command Palette to regenerate it.**
+
+NOTE: The graph is a bit more visible with a 'light' color theme.
 
 ---
 name: terraform-apply
@@ -1102,7 +1128,7 @@ Destroy complete! Resources: 0 destroyed.
 ```
 
 ???
-Terraform can just as easily destroy infrastructure as create it. With great power comes great responsibility!
+**Terraform can just as easily destroy infrastructure as create it. With great power comes great responsibility!**
 
 ---
 name: we-can-rebuild-him
@@ -1251,7 +1277,7 @@ Alternatively, you can copy all of the contents of the **main.tf.codeonly** file
 Run `terraform apply` again to build out the rest of your lab environment.
 
 ???
-Note the dependency in the `data` block that forces terraform to wait until the Virtual Machine is fully provisioned and has a Public IP address before proceeding. Without that `depends_on` parameter the run may sometimes fail.
+Note the dependency in the `data` block that forces terraform to wait until the Virtual Machine is fully provisioned and has a Public IP address before proceeding. Without that `depends_on` parameter the run may sometimes fail. You don't have to highlight this or explain it. This is for the instructor just in case someone asks. Normally it's best to allow Terraform to discover all dependencies automatically.
 
 ---
 name: chapter-3c-lab-answer
