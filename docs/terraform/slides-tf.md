@@ -18,7 +18,11 @@ If you need to change the look and feel of the slide deck just use the style.css
 HTML comments like this one will show up in the source code, but not in the slides or speaker notes.
 --->
 
-Welcome to the beginner's guide to Terraform on Azure. This slide deck is written entirely in Markdown language, which means you can make edits or additions, then submit a pull request to add your changes to the master copy. To make edits to the slide deck simply fork this repository: https://github.com/scarolan/azure-terraform-vault-workshop, edit the Markdown files, and submit a pull request with your changes.
+Welcome to the beginner's guide to Terraform on Azure. This slide deck is written entirely in Markdown language, which means you can make edits or additions, then submit a pull request to add your changes to the master copy. To make edits to the slide deck simply fork this repository:  
+
+https://github.com/scarolan/azure-terraform-vault-workshop  
+
+edit the Markdown files, and submit a pull request with your changes.
 
 The Markdown content is contained in the docs/terraform and docs/vault directories.
 
@@ -745,7 +749,7 @@ persisted to local or remote state storage.
 ```
 
 ???
-**terraform plan is a dry run command. We're not actually building anything yet, Terraform is just telling is what it would do if we ran it for real.**
+**`terraform plan` is a dry run command. We're not actually building anything yet, Terraform is just telling is what it would do if we ran it for real.**
 
 **If you're curious, how are we authenticating to Azure? We've saved some Azure credentials on your workstation as environment variables. You can also use Terraform directly from Azure cloudshell. Terraform is preinstalled in cloudshell and doesn't require any authentication or special configuration.**
 
@@ -1675,6 +1679,7 @@ https://github.com/scarolan/ansible-terraform
 name: provisioner-tips
 Terraform Provisioner Tips
 -------------------------
+<br><br>
 Terraform provisioners like remote-exec are great when you need to run a few simple commands or scripts. For more complex configuration management you'll want a tool like Chef or Ansible. 
 
 Provisioners only run the first time a Terraform run is executed. In this sense, they are not idempotent. If you need ongoing state management of VMs or servers that are long-lived, we recommend using a config management tool.
@@ -1716,6 +1721,9 @@ terraform apply -auto-approve
 ```
 
 .center[![:scale 60%](images/hashimoo.png)]
+
+???
+You might walk through this one with your students, showing them how easy it is to run commands on your target machine. The cowsay program was installed on your Linux target by the setup.sh script in the files directory.
 
 ---
 name: Chapter-6
@@ -1793,6 +1801,9 @@ Lab Exercise 6: State Quiz
 
 What will happen in each scenario when you run `terraform apply`?
 
+???
+Queue up the Jeopardy music! Walk through each row and explain the scenario. See if your students can guess what `terraform apply` will do in each situation.
+
 ---
 name: chapter-6-lab-answer
 Lab Exercise 6: Answer
@@ -1817,6 +1828,9 @@ Terraform Enterprise
 .center[![:scale 60%](images/TFE_GUI.png)]
 
 Terraform Enterprise is a SaaS or on-premise application that provides the following features:
+
+???
+**Until now we've been using only open source features. Sooner or later you'll reach a point where you want more tools for governance and collaboration. Terraform open source is great for small environments and developers, but when you need multiple people or teams to collaborate on the same infrastructure, Terraform Enterprise features can help.**
 
 ---
 name: why-tfe-2
