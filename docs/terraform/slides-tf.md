@@ -754,7 +754,7 @@ name: terraform-plan-2
 Run Terraform Plan
 -------------------------
 <br><br>
-When you ran `terraform plan` and entered your name, you should see output that looks like this:
+When you run `terraform plan` and enter your name, you should see output that looks like this:
 
 ```tex
 Terraform will perform the following actions:
@@ -769,7 +769,7 @@ Terraform will perform the following actions:
 Plan: 1 to add, 0 to change, 0 to destroy.
 ```
 
-**Note that we are not actually building anything yet. This is just a dry run, showing us what would happen if we applied our change.**
+We are not actually building anything yet. This is just a dry run, showing us what would happen if we applied our change.
 
 ---
 name: set-prefix
@@ -859,7 +859,7 @@ prefix = "yourname"
 location = "uksouth"
 ```
 
-**If you wish you can run `terraform plan` again to see a different result. Notice how your location setting has overridden the default setting.**
+If you wish you can run `terraform plan` again to see a different result. Notice how your location setting has overridden the default setting.
 
 ---
 name: chapter-2-review
@@ -941,7 +941,7 @@ resource "azurerm_resource_group" "vaultworkshop" {
 ```
 
 ???
-**Why don't you try commenting out this code, then uncommenting it. This is the easy way to write code. Just highlight, uncomment, save the file.**
+**Try commenting out this code, then uncommenting it. This is the easy way to write code. Just highlight, uncomment, save the file.**
 
 **Resources are the smallest building blocks of Terraform. Think of them as declarative statements about what you want to build. Save the main.tf file.**
 
@@ -1279,6 +1279,8 @@ Run `terraform apply` again to build out the rest of your lab environment.
 ???
 Note the dependency in the `data` block that forces terraform to wait until the Virtual Machine is fully provisioned and has a Public IP address before proceeding. Without that `depends_on` parameter the run may sometimes fail. You don't have to highlight this or explain it. This is for the instructor just in case someone asks. Normally it's best to allow Terraform to discover all dependencies automatically.
 
+NOTE: It will take up to five minutes to build out the lab environment. This is a good place to take a break, or have some time for open discussion and questions.
+
 ---
 name: chapter-3c-lab-answer
 Lab Exercise 3c: Answer
@@ -1564,6 +1566,9 @@ Lab Exercise 4b: Answer
 <br><br><br><br>
 When you run the `terraform fmt` command your code is automatically formatted according to recommended standards. This ensures that your code is always neat and tidy, and eliminates unnecessary code versions caused by empty spaces.
 
+???
+Have your students play around with the `terraform fmt` command for a bit.
+
 ---
 name: chapter-4-review
 Chapter 4 Review
@@ -1594,7 +1599,7 @@ Once you've used Terraform to stand up a virtual machine or container, you may w
 .center[https://www.terraform.io/docs/provisioners/index.html]
 
 ???
-Terraform works hand-in-hand with these other configuration management tools to install packages, configure applications and change OS settings inside of a virtual machine or container.
+**Terraform works hand-in-hand with these other configuration management tools to install packages, configure applications and change OS settings inside of a virtual machine or container.**
 
 ---
 name: file-provisioner
@@ -1672,7 +1677,7 @@ Terraform Provisioner Tips
 -------------------------
 Terraform provisioners like remote-exec are great when you need to run a few simple commands or scripts. For more complex configuration management you'll want a tool like Chef or Ansible. 
 
-Provisioners only run the first time a Terraform run is executed. In this sense, they are not idempotent. If you need ongoing state management of VMs or servers that are long-lived, we recommend using a tool like Chef or Puppet.
+Provisioners only run the first time a Terraform run is executed. In this sense, they are not idempotent. If you need ongoing state management of VMs or servers that are long-lived, we recommend using a config management tool.
 
 On the other hand, if you want immutable infrastructure you should consider using our [Packer](https://packer.io) tool.
 
@@ -1695,6 +1700,9 @@ inline = [
 Run `terraform apply` again and see what happens. Did your virtual machine get rebuilt? Why?
 
 Hint: read up on the [terraform taint](https://www.terraform.io/docs/commands/taint.html) command.
+
+???
+Explain that provisioners only run when virtual machines are first created. If you need to reprovision, you simply destroy and rebuild the VM. You can force a rebuild with this `terraform taint` command.
 
 ---
 name: chapter-5-lab-answer
@@ -1820,6 +1828,9 @@ Terraform Enterprise is a SaaS or on-premise application that provides the follo
 
 * Easy Mode - UI integration with Version Control System
 
+???
+**As your organization begins to standardize on Terraform, you'll have different types of users. Most of you will become terraform experts, but there may be others who just want to build things. They can use the terraform code that folks like you have written. To make this process easy, we have a web application. You log on, click a button, and out pops your infrastructure.**
+
 ---
 name: why-tfe-3
 Terraform Enterprise
@@ -1830,6 +1841,9 @@ Terraform Enterprise is a SaaS or on-premise application that provides the follo
 
 * Easy Mode - UI integration with Version Control System
 * Advanced Users - API driven workflow with CI/CD pipeline
+
+???
+**For our more advanced users we have a fully featured RESTful API. This is useful for programmatic access to terraform features. You can drive terraform plan and apply commands using an API interface. If you have a CI/CD pipeline you can automate your terraform builds as part of your process.**
 
 ---
 name: why-tfe-4
@@ -1843,6 +1857,9 @@ Terraform Enterprise is a SaaS or on-premise application that provides the follo
 * Advanced Users - API driven workflow with CI/CD pipeline
 * Centralized Terraform state management
 
+???
+**Terraform enterprise also provides safe and secure storage for your state files. Instead of having that important state file stored on someone's laptop, now it is safely stored in the Terraform Enterprise application. Only those who need access to the state file can see it, and it is protected from being overwritten or corrupted.**
+
 ---
 name: why-tfe-5
 Terraform Enterprise
@@ -1855,6 +1872,9 @@ Terraform Enterprise is a SaaS or on-premise application that provides the follo
 * Advanced Users - API driven workflow with CI/CD pipeline
 * Centralized Terraform state management
 * Private Module Registry for sharing code
+
+???
+**Eventually you'll have a library of Terraform code that you might like to share and publish for other users and teams in your company. The private module registry makes this easy. You build reusable modules that build infrastructure according to standards, and then publish them for your users. This can help with enforcing security policies and build standards.**
 
 ---
 name: why-tfe-6
@@ -1870,6 +1890,9 @@ Terraform Enterprise is a SaaS or on-premise application that provides the follo
 * Private Module Registry for sharing code
 * Sentinel policy enforcement
 
+???
+**TFE also comes with a policy enforcement engine that can ensure that your users don't build things they shouldn't build, or configure them in the wrong way. For example, you might wish to prevent users from opening network ports to the internet, or from building too many virtual machines. All of these types of rules can be expressed using our Sentinel policy enforcement engine. Sentinel policies prevent users from doing bad things, *before* they provision to the cloud.**
+
 ---
 name: why-tfe-7
 Terraform Enterprise
@@ -1884,6 +1907,9 @@ Terraform Enterprise is a SaaS or on-premise application that provides the follo
 * Private Module Registry for sharing code
 * Sentinel policy enforcement
 * Single Sign-On with SAML
+
+???
+**Terraform Enteprise also supports single sign-on using your own SAML provider. This allows you to quickly map users into your organization's teams and workspaces so they can become productive right away.**
 
 ---
 name: why-tfe-8
@@ -1901,6 +1927,9 @@ Terraform Enterprise is a SaaS or on-premise application that provides the follo
 * Single Sign-On with SAML
 * Secure variable and API key management
 
+???
+**Terraform enterprise can store and encrypt your cloud credentials, passwords or any other sensitive data. These credentials are stored safely inside of a Vault instance that runs inside of TFE.**
+
 ---
 name: Live-Demo
 class: center,middle
@@ -1908,3 +1937,5 @@ Live Demo
 =========================
 ???
 Live demo notes here
+
+TODO: Load the workshop code into TFE for a demo.
