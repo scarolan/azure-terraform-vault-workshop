@@ -54,14 +54,22 @@ Table of Contents
 
 ---
 
+name: Chapter-1
+class: center,middle
+.section[
+Chapter 1  
+Vault Overview
+]
+
+---
+
 name: Vault-Overview
 Vault Overview
 -------------------------
 
-
 ###Vault is a __BIG__ topic!  
 
-This is meant as an overview.  For detailed descriptions or instructions please see the docs, API guide, or learning site:
+This is meant as a high level overview.  For detailed descriptions or instructions please see the docs, API guide, or learning site:
 * https://www.vaultproject.io/docs/
 * https://www.vaultproject.io/api/
 * https://learn.hashicorp.com/vault/
@@ -102,35 +110,20 @@ Vault was designed to address the security needs of modern applications.  It dif
 ---
 
 
-name: Chapter-1
+name: Chapter-2
 class: center,middle
 .section[
-Chapter 1  
+Chapter 2
 Our Vault Server
 ]
 
 ---
 
-name: Our-Vault-Server
-Connecting To Our Vault Server
--------------------------
-
-
-During the Terraform Workshop we deployed a Vault server.  Let's connect to it now.  First, let us retrieve the address from Terraform by inspecting the output:
-```powershell
-PS C:\...> terraform output Vault_Server_url
-http://ehron.centralus.cloudapp.azure.com:8200
-```
-
-Use a web browser to connect to the address that is returned.
-
----
-
 name: Our-Vault-Server-2
-Connecting To Our Vault Server (Continued)
+Our Vault Server 
 -------------------------
 
-We deployed a pre-configured Vault server.  That means we have already:
+During the Terraform Workshop we deployed a pre-configured Vault server.  That means we have already:
 * Initialized the server (vault init)
   * This creates the master key used to encrypt storage
 * Unsealed it
@@ -144,18 +137,26 @@ We deployed a pre-configured Vault server.  That means we have already:
   * A root token can be regenerated at a later date if needed
 
 
-
 ---
 
-
-name: Chapter-2
+name: Chapter-3
 class: center,middle
 .section[
-Chapter 2
+Chapter 3
 Interacting with Vault
 ]
 
 ---
+
+We can interact with our newly deployed Vault server in a number of ways.  One can use the web UI, 
+
+First, let us retrieve the address from Terraform by inspecting the output:
+```powershell
+PS C:\...> terraform output Vault_Server_url
+http://ehron.centralus.cloudapp.azure.com:8200
+```
+
+Use a web browser to connect to the address that is returned.
 
 Log in using the token "root":
 IMG_PLACEHOLDER
