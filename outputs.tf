@@ -8,21 +8,21 @@
 # providing instructions to the user on how to connect to their own custom 
 # demo environment.
 #
-# output "Vault_Server_URL" {
-#   value = "http://${azurerm_public_ip.vault-pip.fqdn}:8200"
-# }
-# output "MySQL_Server_FQDN" {
-#   value = "${azurerm_mysql_server.mysql.fqdn}"
-# }
-# output "_Instructions" {
-#   value = <<SHELLCOMMANDS
+output "Vault_Server_URL" {
+  value = "http://${azurerm_public_ip.vault-pip.fqdn}:8200"
+}
+output "MySQL_Server_FQDN" {
+  value = "${azurerm_mysql_server.mysql.fqdn}"
+}
+output "_Instructions" {
+  value = <<SHELLCOMMANDS
+
+# Connect to your Linux Virtual Machine
 #
-# # Connect to your Linux Virtual Machine
-# #
-# # Run the command below to SSH into your server. You can also use PuTTY or any
-# # other SSH client. Your password is: ${var.admin_password}
-# 
-# ssh ${var.admin_username}@${azurerm_public_ip.vault-pip.fqdn}
-# SHELLCOMMANDS
-# }
+# Run the command below to SSH into your server. You can also use PuTTY or any
+# other SSH client. Your password is: ${var.admin_password}
+
+ssh ${var.admin_username}@${azurerm_public_ip.vault-pip.fqdn}
+SHELLCOMMANDS
+}
 
