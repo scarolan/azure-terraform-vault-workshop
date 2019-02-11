@@ -68,7 +68,7 @@ automatically, and each resource is named with user-defined variables. */
 #     protocol                   = "Tcp"
 #     source_port_range          = "*"
 #     destination_port_range     = "8200"
-#     source_address_prefix      = "*"
+#     source_address_prefix      = "${var.vault_source_ips}"
 #     destination_address_prefix = "*"
 #   }
 
@@ -80,7 +80,7 @@ automatically, and each resource is named with user-defined variables. */
 #     protocol                   = "Tcp"
 #     source_port_range          = "*"
 #     destination_port_range     = "22"
-#     source_address_prefix      = "*"
+#     source_address_prefix      = "${var.ssh_source_ips}"
 #     destination_address_prefix = "*"
 #   }
 # }
