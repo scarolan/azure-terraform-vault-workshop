@@ -55,35 +55,35 @@ a security group, a network interface, a public ip address, a storage
 account and finally the VM itself. Terraform handles all the dependencies 
 automatically, and each resource is named with user-defined variables. */
 
-# resource "azurerm_network_security_group" "vault-sg" {
-#   name                = "${var.prefix}-sg"
-#   location            = "${var.location}"
-#   resource_group_name = "${azurerm_resource_group.vaultworkshop.name}"
+resource "azurerm_network_security_group" "vault-sg" {
+  name                = "${var.prefix}-sg"
+  location            = "${var.location}"
+  resource_group_name = "${azurerm_resource_group.vaultworkshop.name}"
 
-#   security_rule {
-#     name                       = "Vault"
-#     priority                   = 100
-#     direction                  = "Inbound"
-#     access                     = "Allow"
-#     protocol                   = "Tcp"
-#     source_port_range          = "*"
-#     destination_port_range     = "8200"
-#     source_address_prefix      = "${var.vault_source_ips}"
-#     destination_address_prefix = "*"
-#   }
+  security_rule {
+    name                       = "Vault"
+    priority                   = 100
+    direction                  = "Inbound"
+    access                     = "Allow"
+    protocol                   = "Tcp"
+    source_port_range          = "*"
+    destination_port_range     = "8200"
+    source_address_prefix      = "${var.vault_source_ips}"
+    destination_address_prefix = "*"
+  }
 
-#   security_rule {
-#     name                       = "SSH"
-#     priority                   = 101
-#     direction                  = "Inbound"
-#     access                     = "Allow"
-#     protocol                   = "Tcp"
-#     source_port_range          = "*"
-#     destination_port_range     = "22"
-#     source_address_prefix      = "${var.ssh_source_ips}"
-#     destination_address_prefix = "*"
-#   }
-# }
+  security_rule {
+    name                       = "SSH"
+    priority                   = 101
+    direction                  = "Inbound"
+    access                     = "Allow"
+    protocol                   = "Tcp"
+    source_port_range          = "*"
+    destination_port_range     = "22"
+    source_address_prefix      = "${var.ssh_source_ips}"
+    destination_address_prefix = "*"
+  }
+}
 
 /* A network interface. This is required by the azurerm_virtual_machine 
 resource. Terraform will let you know if you're missing a dependency. */
