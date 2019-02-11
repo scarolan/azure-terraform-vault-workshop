@@ -41,12 +41,12 @@ variable "vm_size" {
 
 variable "vault_source_ips" {
   description = "Valid CIDR range for allowed source IPs to access Vault."
-  default     = "0.0.0.0"
+  default     = "0.0.0.0/0"
 }
 
 variable "ssh_source_ips" {
   description = "Valid CIDR range for allowed source IPs to access SSH."
-  default     = "0.0.0.0"
+  default     = "0.0.0.0/0"
 }
 
 variable "image_publisher" {
