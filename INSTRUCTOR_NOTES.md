@@ -23,7 +23,7 @@ Follow this process to build a Windows 10 workstation image in your own account 
 
 1. Spin up a standard Windows 10 instance from the marketplace *inside Azure Dev/Test labs*. You'll use this as your base image. It's important that you create your machine inside the lab where you want to snapshot it. Once you're able to log onto the machine, run the steps below.
 
-1. Run this script.
+2. Run this script.
 ```
 Set-ExecutionPolicy Bypass -Scope Process -Force; iex ((New-Object System.Net.WebClient).DownloadString('https://chocolatey.org/install.ps1'))
 
@@ -47,17 +47,17 @@ $Shortcut = $WScriptShell.CreateShortcut($ShortcutFile)
 $Shortcut.TargetPath = $TargetFile
 $Shortcut.Save()
 ```
-1. Install vault and terraform in C:\windows\system32. That's right, just toss the binaries in there.
-1. Install the Azure CLI
-1. Make a service principal.  https://www.terraform.io/docs/providers/azurerm/authenticating_via_service_principal.html
-1. Run these powershell commands (as admin) with your credentials:
+3. Install vault and terraform in C:\windows\system32. That's right, just toss the binaries in there.
+4. Install the Azure CLI
+5. Make a service principal.  https://www.terraform.io/docs/providers/azurerm/authenticating_via_service_principal.html
+6. Run these powershell commands (as admin) with your credentials:
 ```
 [Environment]::SetEnvironmentVariable("ARM_SUBSCRIPTION_ID", "c0a607b2-6372-4ef3-abdb-dbe52a7b56ba", "Machine")
 [Environment]::SetEnvironmentVariable("ARM_CLIENT_ID", "e8e56057-d294-4540-8235-22064e1b3179", "Machine")
 [Environment]::SetEnvironmentVariable("ARM_CLIENT_SECRET", "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx", "Machine")
 [Environment]::SetEnvironmentVariable("ARM_TENANT_ID", "0e3e2e88-8caf-41ca-b4da-e3b33b6c52ec", "Machine")
 ```
-1. Alteratively, manually configure these environment variables as *system* and not *user* env vars
+7. Alteratively, manually configure these environment variables as *system* and not *user* env vars
 
 ```
 ARM_SUBSCRIPTION_ID
@@ -66,7 +66,7 @@ ARM_CLIENT_SECRET
 ARM_TENANT_ID
 ```
 
-1. Add a file called setup.ps1 inside of C:\Users\Public\Desktop. This will ensure that it shows up on your users desktop when you deploy new workstations:
+8. Add a file called setup.ps1 inside of C:\Users\Public\Desktop. This will ensure that it shows up on your users desktop when you deploy new workstations:
 
 ```
 # Post-install steps for HashiCorp training workstation
@@ -77,13 +77,13 @@ Install-PackageProvider -Name NuGet -MinimumVersion 2.8.5.201 -Force
 Install-Module posh-git -Force -SkipPublisherCheck -AllowClobber
 ```
 
-1.  Run this to sysprep and "Generalize" the machine:
+9.  Run this to sysprep and "Generalize" the machine:
 
 ```
 cd C:\windows\system32\sysprep
 .\sysprep.exe /generalize
 ```
 
-1.  Click the 'generalize' box and set the pulldown to "shutdown". Wait and give it a good ten minutes to fully shutdown.
-1.  After the machine has been shut down, you can browse to it in the portal click it and create an image from it.  Name it hc-training-workstation-DATE.  Example:  `hc-training-workstation-2019-01-11`
-1. Use the image to spin up your workstations
+10.  Click the 'generalize' box and set the pulldown to "shutdown". Wait and give it a good ten minutes to fully shutdown.
+11.  After the machine has been shut down, you can browse to it in the portal click it and create an image from it. Name it hc-training-workstation-DATE.  Example:  `hc-training-workstation-2019-01-11`
+12. Use the image to spin up your workstations
