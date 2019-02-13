@@ -74,7 +74,7 @@ automatically, and each resource is named with user-defined variables. */
 
 #   security_rule {
 #     name                       = "Transit-App"
-#     priority                   = 100
+#     priority                   = 102
 #     direction                  = "Inbound"
 #     access                     = "Allow"
 #     protocol                   = "Tcp"
