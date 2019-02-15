@@ -1,7 +1,7 @@
 name: Azure-Terraform-Vault-Workshop
 class: center,middle,title-slide
 count: false
-![:scale 80%](images/tfaz.png)
+![:scale 80%](images/vault_logo.png)
 .titletext[
 Azure Vault Workshop]
 Modern Security With Vault
@@ -147,31 +147,37 @@ Interacting with Vault
 ]
 
 ---
-
 name: Our-Vault-Server
 Connecting To Our Vault Server
 -------------------------
 
 Before we begin we will connect to our Vault server so that we can run a setup script.  
 
-Retrieve the connection instructions from Terraform:
+Retrieve the connection instructions from Terraform. Make sure to run this command from within the azure-terraform-vault-workshop directory, where you built the lab environment.
 
+Command:
 ```powershell
-PS C:\Users\ehron\Desktop\azure-terraform-vault-workshop> terraform output _Instructions
-#
-# # Connect to your Linux Virtual Machine
-# #
-# # Run the command below to SSH into your server. You can also use PuTTY or any
-# # other SSH client. Your password is: Password123!
-#
-# ssh hashicorp@ehron.centralus.cloudapp.azure.com
-#
+terraform output _Instructions
 ```
 
-Next, open another Powershell window, paste in the command, and run the vault_setup.sh script when connected:
+Output:
+```tex
+...
+ssh hashicorp@ehron.centralus.cloudapp.azure.com
+```
+
+---
+name: Our-Vault-Server
+Connecting To Our Vault Server
+-------------------------
+
+Open another Powershell window, paste in the ssh command, and run the vault_setup.sh script when connected. 
+
+Your password is Password123!
+
+Commands:
 ```powershell
-# The password is Password123!
-PS C:\...> ssh hashicorp@ehron.centralus.cloudapp.azure.com
+ssh hashicorp@ehron.centralus.cloudapp.azure.com
 ./vault_setup.sh
 ```
 _Note: Leave this window open as we will need this connection in future steps_
@@ -185,8 +191,14 @@ Connecting To Our Vault Server
 We can interact with our newly deployed Vault server in a number of ways.  Let us connect to the web UI.
 
 First, let us retrieve the address from Terraform by inspecting the output:
+
+Command:
 ```powershell
-PS C:\...> terraform output Vault_Server_url 
+terraform output Vault_Server_url 
+```
+
+Output:
+```tex
 http://ehron.centralus.cloudapp.azure.com:8200
 ```
 
@@ -211,9 +223,15 @@ Connecting To Our Vault Server (Continued)
 -------------------------
 
 We can also access our Vault server from the command line.  Vault is preinstalled on your lab machine.  First, we need to tell the Vault client where the Vault server is:
+
+Command:
 ```powershell
-PS C:\...> $Env:VAULT_ADDR="http://<YOUR_NAME>.<REGION>.cloudapp.azure.com:8200"
-PS C:\...> vault status
+$Env:VAULT_ADDR="http://<YOUR_NAME>.<REGION>.cloudapp.azure.com:8200"
+vault status
+```
+
+Output:
+```tex
 Key             Value
 ---             -----
 Seal Type       shamir
@@ -231,10 +249,15 @@ HA Enabled      false
 name: Our-Vault-Server-4
 Authenticating To Our Vault Server
 -------------------------
+Let us log in.  We need to authenticate on the command line just as we did in the web UI:
 
-Let us log in.   We need to authenticate on the command line just as we did in the web UI:
+Command:
 ```powershell
-PS C:\...> vault login
+vault login
+```
+
+Output:
+```tex
 Token (will be hidden):
 Success! You are now authenticated. The token information displayed below
 is already stored in the token helper. You do NOT need to run "vault login"
@@ -318,6 +341,7 @@ Path and Capabilities
 The path portion literally maps to an API path.  Capabilities can include things like allowing to read, update, list, delete, create, etc.
 
 A common pattern is for organizations to create sections of Vault for a BU or department.  Let us imagine we wanted to allow someone full control over such a section.  We could write a policy like so:
+
 ```hcl
 path "lob_a/dept_1/*" {
     capabilities = ["read", "list", "create", "delete", "update"]
@@ -365,8 +389,14 @@ vault policy write secret secret.hcl
 ```
 
 We can verify that we were succesful by reading the policy endpoint:
-```bash
-PS C:/... > vault list sys/policy
+
+Command:
+```powershell
+vault list sys/policy
+```
+
+Output:
+```tex
 Keys
 ----
 default
@@ -418,6 +448,7 @@ Authentication Example: Userpass (Continued)
 -------------------------
 
 Authentication methods are "mounted" to a path.  We will enable the userpass auth method now.  You should still be logged in with the root token:
+
 ```hcl
 vault auth enable -path=workshop/userpass userpass
 ```
@@ -431,6 +462,7 @@ Authentication Example: Userpass (Continued)
 -------------------------
 
 Next, let's create a couple of users:
+
 ```bash
 vault write auth/workshop/userpass/users/bob \
     password=foo \
@@ -510,6 +542,7 @@ Dynamic Secrets: Enable and Create Role
 We will now enable the database secret engine, and create a couple of roles
 
 The following commands should be run on the Vault server:
+
 ```bash
 vault write lob_a/workshop/database/roles/workshop-app-long \
     db_name=wsmysqldatabase \
@@ -522,7 +555,6 @@ vault write lob_a/workshop/database/roles/workshop-app \
     creation_statements="CREATE USER '{{name}}'@'%' IDENTIFIED BY '{{password}}';GRANT ALL ON *.* TO '{{name}}'@'%';" \
     default_ttl="5m" \
     max_ttl="1h"
-
 ```
 
 ---
@@ -543,11 +575,15 @@ There was a lot going on in the last slide.  We specified a number of things:
 name: Database-Engine-3
 Dynamic Secrets: Retrieve an account
 -------------------------
-
 Now that we have configured the secret engine let us use it to retrieve an account!  In production you would create a policy scoped to this path.  In the interest of time we will just log back in as root.  Execute the following commands from your SSH connection to the Vault server:
+Commands:
 ```bash
-hashicorp@ehron:~$ vault login root
-hashicorp@ehron:~$ vault read lob_a/workshop/database/creds/workshop-app
+vault login root
+vault read lob_a/workshop/database/creds/workshop-app
+```
+
+Output:
+```tex
 Key                Value
 ---                -----
 lease_id           lob_a/workshop/database/creds/workshop-app/7iGbAFpSiq8VXkpzuvqVESiy
@@ -556,7 +592,6 @@ lease_renewable    true
 password           A1a-6piezZFGBDzplwUb
 username           v-token-workshop-a-787SbPtZgozJ4
 ```
-
 Voila!  We have database creds!
 
 ---
@@ -581,7 +616,6 @@ MySQL [(none)]>
 ```
 
 _The above command is tricky.  No spaces between -p and password are allowed, and the username format is quite odd.  Cutting and pasting where possible is ideal..._
-
 
 ---
 
