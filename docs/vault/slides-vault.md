@@ -162,7 +162,7 @@ terraform output _Instructions
 ```
 
 Output:
-```
+```tex
 ...
 ssh hashicorp@ehron.centralus.cloudapp.azure.com
 ```
@@ -192,7 +192,7 @@ terraform output Vault_Server_url
 ```
 
 Output:
-```
+```tex
 http://ehron.centralus.cloudapp.azure.com:8200
 ```
 
@@ -391,7 +391,7 @@ vault list sys/policy
 ```
 
 Output:
-```
+```tex
 Keys
 ----
 default
