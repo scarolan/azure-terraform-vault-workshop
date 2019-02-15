@@ -360,7 +360,7 @@ Policies are assigned when a user authenticates.  We will now create and save a 
 
 Our policy will limit the secrets a user can see to those under a "lob_a/workshop" path.  
 
-Create file named policy.hcl, and put the following inside it:
+Create file named "lob_a.hcl", and put the following inside it:
 
 ```hcl
 path "lob_a/workshop/*" {
@@ -384,7 +384,7 @@ Write the Policies
 All that is left is for us to write the policies to Vault:
 ```bash
 # Write the policies
-vault policy write lob_a lob_a_policy
+vault policy write lob_a lob_a.hcl
 vault policy write secret secret.hcl
 ```
 
