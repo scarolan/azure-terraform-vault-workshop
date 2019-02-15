@@ -99,12 +99,12 @@ How Vault Secures Applications
 -------------------------
 
 
-###Idenity Based Model
+###Identity Based Model
 Vault was designed to address the security needs of modern applications.  It differs from the traditional approach by using:
 
-* Identity based rules allowing security to strecth across network perimeters
-* Dyanmic, short lived credentials that are rotated frequently
-* Indivual accounts to maintain provenance (tie action back to entity)
+* Identity based rules allowing security to stretch across network perimeters
+* Dynamic, short lived credentials that are rotated frequently
+* Individual accounts to maintain provenance (tie action back to entity)
 * Easily invalidate credentials or entities
 
 ---
@@ -320,7 +320,7 @@ name: Vault-Authorization
 Authorization and Policies
 -------------------------
 
-Vault, by default, allows no access to any entity.  Administrators must explicitly grant access to consumers of the Vault service by definind policies. 
+Vault, by default, allows no access to any entity.  Administrators must explicitly grant access to consumers of the Vault service by defined policies. 
 
 Policies express a path, and a set of "capabilities" for that path.
 
@@ -388,7 +388,7 @@ vault policy write lob_a lob_a_policy
 vault policy write secret secret.hcl
 ```
 
-We can verify that we were succesful by reading the policy endpoint:
+We can verify that we were successful by reading the policy endpoint:
 
 Command:
 ```powershell
@@ -529,7 +529,7 @@ name: Database-Engine
 Dynamic Secrets: Roles
 -------------------------
 
-Vault adminstrators enable a secret engine, and then create "roles" that describe a set of capabilities.  Multiple roles for the same engine can exist.
+Vault administrators enable a secret engine, and then create "roles" that describe a set of capabilities.  Multiple roles for the same engine can exist.
 
 For example, you could have a read-only role, and a read-write role for the same database.  You control access to the roles through policies.
 
@@ -597,7 +597,7 @@ Voila!  We have database creds!
 ---
 
 name: Database-Engine-4
-Dynamic Secrets: veriify account
+Dynamic Secrets: verify account
 -------------------------
 
 We can verify the creds by using them to log in to the Azure Mysql database:
@@ -646,7 +646,7 @@ The last thing we'll touch on today is probably the most valuable feature Vault 
 
 EEAS has many benefits:
   * Centralized key management
-  * Automated key rotation and rewrapping
+  * Automated key rotation and re-wrapping
   * Ensuring only approved encryption algorithms are used
   * Allowing developers to encrypt data while never giving them access to the key itself
   * Audit trail for both access and operational tasks like rotation
@@ -784,7 +784,7 @@ name: Encryption-as-a-Service-6
 Encryption as a Service: Protecting PII Using Vault
 -------------------------
 
-Return to your shell, and stop the application (ctrl + c).  We need to edit our config.ini file.  We want to change the Enabled value to Tru:
+Return to your shell, and stop the application (ctrl + c).  We need to edit our config.ini file.  We want to change the Enabled value to True:
 ```bash
 [DEFAULT]
 LogLevel = DEBUG # Change this to debug if you wish
@@ -852,7 +852,7 @@ Encryption as a Service: Protecting PII Using Vault (Continued)
 
 When we look at the Database View we can see that our records are no longer stored in plaintext.  We see ciphertext instead.
 
-Using Vault in this way significantly reduces the threat of a harmful breach.  Unencrypted PII is very valuable.  Ciphertext is virually worthless!
+Using Vault in this way significantly reduces the threat of a harmful breach.  Unencrypted PII is very valuable.  Ciphertext is virtually worthless!
 
 ---
 
