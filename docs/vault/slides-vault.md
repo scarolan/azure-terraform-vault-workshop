@@ -147,7 +147,6 @@ Interacting with Vault
 ]
 
 ---
-
 name: Our-Vault-Server
 Connecting To Our Vault Server
 -------------------------
@@ -167,7 +166,14 @@ Output:
 ssh hashicorp@ehron.centralus.cloudapp.azure.com
 ```
 
-Next, open another Powershell window, paste in the command, and run the vault_setup.sh script when connected. Your password is Password123!
+---
+name: Our-Vault-Server
+Connecting To Our Vault Server
+-------------------------
+
+Open another Powershell window, paste in the ssh command, and run the vault_setup.sh script when connected. 
+
+Your password is Password123!
 
 Commands:
 ```powershell
