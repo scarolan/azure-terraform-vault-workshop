@@ -1156,6 +1156,9 @@ azurerm_resource_group.vaultworkshop: Creation complete after 1s (ID: /subscript
 Apply complete! Resources: 1 added, 0 changed, 0 destroyed.
 ```
 
+???
+The phrase "We can rebuild him. We have the technology." comes from 1970s TV show, The Six Million Dollar Man. https://www.youtube.com/watch?v=0CPJ-AbCsT8#t=2m00s 
+
 ---
 name: chapter-3b-lab
 Lab Exercise 3b: Tag Your Resource Group
@@ -1430,7 +1433,7 @@ SHELLCOMMANDS
 name: terraform-outputs
 The Outputs File
 -------------------------
-Open up the outputs.tf file in Visual Studio Code. Uncomment lines 11-32. Save the file.
+Open up the outputs.tf file in Visual Studio Code. Uncomment all of the outputs. Save the file.
 
 ```terraform
 output "Vault_Server_URL" {
