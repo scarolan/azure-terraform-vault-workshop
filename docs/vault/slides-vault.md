@@ -156,22 +156,22 @@ Before we begin we will connect to our Vault server so that we can run a setup s
 
 Retrieve the connection instructions from Terraform. Make sure to run this command from within the azure-terraform-vault-workshop directory, where you built the lab environment.
 
+Command:
 ```powershell
-PS> terraform output _Instructions
-#
-# # Connect to your Linux Virtual Machine
-# #
-# # Run the command below to SSH into your server. You can also use PuTTY or any
-# # other SSH client. Your password is: Password123!
-#
-# ssh hashicorp@ehron.centralus.cloudapp.azure.com
-#
+terraform output _Instructions
 ```
 
-Next, open another Powershell window, paste in the command, and run the vault_setup.sh script when connected:
+Output:
+```
+...
+ssh hashicorp@ehron.centralus.cloudapp.azure.com
+```
+
+Next, open another Powershell window, paste in the command, and run the vault_setup.sh script when connected. Your password is Password123!
+
+Commands:
 ```powershell
-# The password is Password123!
-PS C:\...> ssh hashicorp@ehron.centralus.cloudapp.azure.com
+ssh hashicorp@ehron.centralus.cloudapp.azure.com
 ./vault_setup.sh
 ```
 _Note: Leave this window open as we will need this connection in future steps_
@@ -185,8 +185,14 @@ Connecting To Our Vault Server
 We can interact with our newly deployed Vault server in a number of ways.  Let us connect to the web UI.
 
 First, let us retrieve the address from Terraform by inspecting the output:
+
+Command:
 ```powershell
-PS C:\...> terraform output Vault_Server_url 
+terraform output Vault_Server_url 
+```
+
+Output:
+```
 http://ehron.centralus.cloudapp.azure.com:8200
 ```
 
