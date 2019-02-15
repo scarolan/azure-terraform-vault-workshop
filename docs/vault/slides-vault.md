@@ -1,7 +1,7 @@
 name: Azure-Terraform-Vault-Workshop
 class: center,middle,title-slide
 count: false
-![:scale 80%](images/tfaz.png)
+![:scale 80%](images/vault_logo.png)
 .titletext[
 Azure Vault Workshop]
 Modern Security With Vault
@@ -154,10 +154,10 @@ Connecting To Our Vault Server
 
 Before we begin we will connect to our Vault server so that we can run a setup script.  
 
-Retrieve the connection instructions from Terraform:
+Retrieve the connection instructions from Terraform. Make sure to run this command from within the azure-terraform-vault-workshop directory, where you built the lab environment.
 
 ```powershell
-PS C:\Users\ehron\Desktop\azure-terraform-vault-workshop> terraform output _Instructions
+PS> terraform output _Instructions
 #
 # # Connect to your Linux Virtual Machine
 # #
@@ -211,9 +211,15 @@ Connecting To Our Vault Server (Continued)
 -------------------------
 
 We can also access our Vault server from the command line.  Vault is preinstalled on your lab machine.  First, we need to tell the Vault client where the Vault server is:
+
+Command:
 ```powershell
-PS C:\...> $Env:VAULT_ADDR="http://<YOUR_NAME>.<REGION>.cloudapp.azure.com:8200"
-PS C:\...> vault status
+$Env:VAULT_ADDR="http://<YOUR_NAME>.<REGION>.cloudapp.azure.com:8200"
+vault status
+```
+
+Output:
+```tex
 Key             Value
 ---             -----
 Seal Type       shamir
@@ -233,8 +239,14 @@ Authenticating To Our Vault Server
 -------------------------
 
 Let us log in.   We need to authenticate on the command line just as we did in the web UI:
+
+Command:
 ```powershell
-PS C:\...> vault login
+vault login
+```
+
+Output
+```tex
 Token (will be hidden):
 Success! You are now authenticated. The token information displayed below
 is already stored in the token helper. You do NOT need to run "vault login"
@@ -318,6 +330,7 @@ Path and Capabilities
 The path portion literally maps to an API path.  Capabilities can include things like allowing to read, update, list, delete, create, etc.
 
 A common pattern is for organizations to create sections of Vault for a BU or department.  Let us imagine we wanted to allow someone full control over such a section.  We could write a policy like so:
+
 ```hcl
 path "lob_a/dept_1/*" {
     capabilities = ["read", "list", "create", "delete", "update"]
@@ -365,8 +378,14 @@ vault policy write secret secret.hcl
 ```
 
 We can verify that we were succesful by reading the policy endpoint:
-```bash
-PS C:/... > vault list sys/policy
+
+Command:
+```powershell
+vault list sys/policy
+```
+
+Output:
+```
 Keys
 ----
 default
@@ -418,6 +437,7 @@ Authentication Example: Userpass (Continued)
 -------------------------
 
 Authentication methods are "mounted" to a path.  We will enable the userpass auth method now.  You should still be logged in with the root token:
+
 ```hcl
 vault auth enable -path=workshop/userpass userpass
 ```
@@ -431,6 +451,7 @@ Authentication Example: Userpass (Continued)
 -------------------------
 
 Next, let's create a couple of users:
+
 ```bash
 vault write auth/workshop/userpass/users/bob \
     password=foo \
@@ -510,6 +531,7 @@ Dynamic Secrets: Enable and Create Role
 We will now enable the database secret engine, and create a couple of roles
 
 The following commands should be run on the Vault server:
+
 ```bash
 vault write lob_a/workshop/database/roles/workshop-app-long \
     db_name=wsmysqldatabase \
@@ -522,7 +544,6 @@ vault write lob_a/workshop/database/roles/workshop-app \
     creation_statements="CREATE USER '{{name}}'@'%' IDENTIFIED BY '{{password}}';GRANT ALL ON *.* TO '{{name}}'@'%';" \
     default_ttl="5m" \
     max_ttl="1h"
-
 ```
 
 ---
@@ -581,7 +602,6 @@ MySQL [(none)]>
 ```
 
 _The above command is tricky.  No spaces between -p and password are allowed, and the username format is quite odd.  Cutting and pasting where possible is ideal..._
-
 
 ---
 
