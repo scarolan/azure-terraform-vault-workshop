@@ -249,15 +249,14 @@ HA Enabled      false
 name: Our-Vault-Server-4
 Authenticating To Our Vault Server
 -------------------------
-
-Let us log in.   We need to authenticate on the command line just as we did in the web UI:
+Let us log in.  We need to authenticate on the command line just as we did in the web UI:
 
 Command:
 ```powershell
 vault login
 ```
 
-Output
+Output:
 ```tex
 Token (will be hidden):
 Success! You are now authenticated. The token information displayed below
@@ -576,11 +575,15 @@ There was a lot going on in the last slide.  We specified a number of things:
 name: Database-Engine-3
 Dynamic Secrets: Retrieve an account
 -------------------------
-
 Now that we have configured the secret engine let us use it to retrieve an account!  In production you would create a policy scoped to this path.  In the interest of time we will just log back in as root.  Execute the following commands from your SSH connection to the Vault server:
+Commands:
 ```bash
-hashicorp@ehron:~$ vault login root
-hashicorp@ehron:~$ vault read lob_a/workshop/database/creds/workshop-app
+vault login root
+vault read lob_a/workshop/database/creds/workshop-app
+```
+
+Output:
+```tex
 Key                Value
 ---                -----
 lease_id           lob_a/workshop/database/creds/workshop-app/7iGbAFpSiq8VXkpzuvqVESiy
@@ -589,7 +592,6 @@ lease_renewable    true
 password           A1a-6piezZFGBDzplwUb
 username           v-token-workshop-a-787SbPtZgozJ4
 ```
-
 Voila!  We have database creds!
 
 ---
