@@ -157,7 +157,7 @@ Retrieve the connection instructions from Terraform. Make sure to run this comma
 
 Command:
 ```powershell
-terraform output _Instructions
+terraform output
 ```
 
 Output:
@@ -194,11 +194,12 @@ First, let us retrieve the address from Terraform by inspecting the output:
 
 Command:
 ```powershell
-terraform output Vault_Server_url 
+terraform output
 ```
 
 Output:
 ```tex
+...
 http://ehron.centralus.cloudapp.azure.com:8200
 ```
 
