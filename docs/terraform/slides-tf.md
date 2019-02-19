@@ -1964,20 +1964,19 @@ TODO: Load the workshop code into TFE for a demo.
 name: additional-resources
 Additional Resources
 -------------------------
-<br><br>
 If you'd like to learn more about Terraform on Azure try the links below:
 
-HashiCorp Learning Portal
+HashiCorp Learning Portal  
 https://learn.hashicorp.com/terraform/
 
-Microsoft Terraform Quickstarts
+Microsoft Terraform Quickstarts  
 https://docs.microsoft.com/en-us/azure/terraform/
 
-Terraform with Azure Cloudshell
+Terraform with Azure Cloudshell  
 https://docs.microsoft.com/en-us/azure/terraform/terraform-cloud-shell
 
-Terraform Azurerm Provider Documentation
+Terraform Azurerm Provider Documentation  
 https://www.terraform.io/docs/providers/azurerm/
 
-Link to this Slide Deck
+Link to this Slide Deck  
 https://scarolan.github.io/azure-terraform-vault-workshop/terraform
