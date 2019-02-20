@@ -39,13 +39,13 @@ vault write lob_a/workshop/database/config/wsmysqldatabase \
 # Create our roles
 vault write lob_a/workshop/database/roles/workshop-app-long \
     db_name=wsmysqldatabase \
-    creation_statements="CREATE USER '{{name}}'@'%' IDENTIFIED BY '{{password}}';GRANT ALL ON *.* TO '{{name}}'@'%';" \
+    creation_statements="CREATE USER '{{name}}'@'%' IDENTIFIED BY '{{password}}';GRANT SELECT, INSERT, UPDATE, DELETE ON *.* TO '{{name}}'@'%' WITH GRANT OPTION;FLUSH PRIVILEGES;" \
     default_ttl="1h" \
     max_ttl="24h"
 
 vault write lob_a/workshop/database/roles/workshop-app \
     db_name=wsmysqldatabase \
-    creation_statements="CREATE USER '{{name}}'@'%' IDENTIFIED BY '{{password}}';GRANT ALL ON *.* TO '{{name}}'@'%';" \
+    creation_statements="CREATE USER '{{name}}'@'%' IDENTIFIED BY '{{password}}';GRANT SELECT, INSERT, UPDATE, DELETE ON *.* TO '{{name}}'@'%' WITH GRANT OPTION;FLUSH PRIVILEGES;" \
     default_ttl="5m" \
     max_ttl="1h"
 
