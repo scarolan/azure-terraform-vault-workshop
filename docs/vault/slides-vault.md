@@ -545,6 +545,17 @@ We will now enable the database secret engine, and create a couple of roles
 The following commands should be run on the Vault server:
 
 ```bash
+# Enable database secrets engine
+vault secrets enable -path=lob_a/workshop/database database
+
+# Configure our secret engine
+vault write lob_a/workshop/database/config/wsmysqldatabase \
+    plugin_name=mysql-database-plugin \
+    connection_url="{{username}}:{{password}}@tcp(${MYSQL_HOST}.mysql.database.azure.com:3306)/" \
+    allowed_roles="workshop-app","workshop-app-long" \
+    username="hashicorp@${MYSQL_HOST}" \
+    password="Password123!"
+
 vault write lob_a/workshop/database/roles/workshop-app-long \
     db_name=wsmysqldatabase \
     creation_statements="CREATE USER '{{name}}'@'%' IDENTIFIED BY '{{password}}';GRANT SELECT, INSERT, UPDATE, DELETE ON *.* TO '{{name}}'@'%' WITH GRANT OPTION;FLUSH PRIVILEGES;" \
