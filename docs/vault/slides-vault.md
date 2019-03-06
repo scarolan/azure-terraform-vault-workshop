@@ -276,6 +276,15 @@ policies             ["root"]
 ```
 
 ---
+name: Our-Vault-Server-4.5
+Install the Postman Chrome Extension
+-------------------------
+
+Install the free Postman extension in your web browser. You can use the shortcut link below to download it:
+
+.center[https://goo.gl/rwTDYJ]
+
+---
 
 name: Our-Vault-Server-5
 API Call To Our Vault Server
