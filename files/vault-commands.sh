@@ -1,13 +1,29 @@
-#!/bin/sh
 
-# Note: This script requires that the VAULT_ADDR, VAULT_TOKEN, and MYSQL_HOST environment variables be set.
-# Example:
-# export VAULT_ADDR=http://127.0.0.1:8200
-# export VAULT_TOKEN=root
-# export MYSQL_HOST=bugsbunny-mysql-server
+# Create our policies
+echo 'path "lob_a/workshop/*" {
+    capabilities = ["read", "list", "create", "delete", "update"]
+}' > lob_a_policy.hcl
 
-# Enable Auditing
-vault audit enable file file_path=/${HOME}/vault.log
+echo 'path "secret/*" {
+    capabilities = ["read", "list", "create"]
+}' > secret.hcl
+
+# Write the policies
+vault policy write lob_a lob_a_policy.hcl
+vault policy write secret secret.hcl
+
+
+# Enable userpass at mount workshop/userpass
+vault auth enable -path=workshop/userpass userpass
+
+# Create users 
+vault write auth/workshop/userpass/users/bob \
+    password=foo \
+    policies=secret
+
+vault write auth/workshop/userpass/users/sally \
+    password=foo \
+    policies=lob_a
 
 # Enable database secrets engine
 vault secrets enable -path=lob_a/workshop/database database
@@ -23,13 +39,13 @@ vault write lob_a/workshop/database/config/wsmysqldatabase \
 # Create our roles
 vault write lob_a/workshop/database/roles/workshop-app-long \
     db_name=wsmysqldatabase \
-    creation_statements="CREATE USER '{{name}}'@'%' IDENTIFIED BY '{{password}}';GRANT ALL ON my_app.* TO '{{name}}'@'%';" \
+    creation_statements="CREATE USER '{{name}}'@'%' IDENTIFIED BY '{{password}}';GRANT SELECT, INSERT, UPDATE, DELETE ON *.* TO '{{name}}'@'%' WITH GRANT OPTION;FLUSH PRIVILEGES;" \
     default_ttl="1h" \
     max_ttl="24h"
 
 vault write lob_a/workshop/database/roles/workshop-app \
     db_name=wsmysqldatabase \
-    creation_statements="CREATE USER '{{name}}'@'%' IDENTIFIED BY '{{password}}';GRANT ALL ON my_app.* TO '{{name}}'@'%';" \
+    creation_statements="CREATE USER '{{name}}'@'%' IDENTIFIED BY '{{password}}';GRANT SELECT, INSERT, UPDATE, DELETE ON *.* TO '{{name}}'@'%' WITH GRANT OPTION;FLUSH PRIVILEGES;" \
     default_ttl="5m" \
     max_ttl="1h"
 
@@ -45,9 +61,7 @@ vault write -f lob_a/workshop/transit/keys/archive-key
 # Install app prerequisites
 sudo apt-get -y update > /dev/null 2>&1
 sudo apt-get install -y python3-pip > /dev/null 2>&1
-sudo pip3 install mysql-connector-python hvac python3-flask > /dev/null 2>&1
+sudo pip3 install mysql-connector-python hvac Flask > /dev/null 2>&1
 
-git clone https://github.com/norhe/transit-app-example.git
-
-echo "Script complete."
-
+# Retrieve test credentials
+vault read lob_a/workshop/database/creds/workshop-app-long

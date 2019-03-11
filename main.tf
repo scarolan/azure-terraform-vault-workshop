@@ -73,6 +73,18 @@ automatically, and each resource is named with user-defined variables. */
 #   }
 
 #   security_rule {
+#     name                       = "Transit-App"
+#     priority                   = 102
+#     direction                  = "Inbound"
+#     access                     = "Allow"
+#     protocol                   = "Tcp"
+#     source_port_range          = "*"
+#     destination_port_range     = "5000"
+#     source_address_prefix      = "*"
+#     destination_address_prefix = "*"
+#   }
+
+#   security_rule {
 #     name                       = "SSH"
 #     priority                   = 101
 #     direction                  = "Inbound"

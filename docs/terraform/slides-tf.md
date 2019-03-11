@@ -513,14 +513,15 @@ RDP is installed by default on almost all Windows corporate PCs and laptops. If 
 name: workstation-setup-2
 Run the setup.ps1 script
 -------------------------
-
-<br><br><br>
+<br><br>
 .center[![:scale 50%](images/run_setup.png)]
 
 Right click on the file called 'setup' on your desktop and select 'Run with Powershell'. Type Y for Yes when it asks about changing your execution policy.
 
+**WARNING:** Do not skip this step. It fixes a known issue with line endings on Windows.
+
 ???
-If anyone is curious what this powershell script does, it's disabling windows line endings for git clone, and installing the posh-git powershell extension. We may add more setup steps to this script as time goes by.
+If anyone is curious what this powershell script does, it's disabling windows line endings for git clone, and installing the posh-git powershell extension. We may add more setup steps to this script as time goes by. If you see an error with the remote-exec provisioner later in the deck, it is usually because the student skipped this step.
 
 **This handy script does a few setup and housekeeping commands for us. Right click on the setup.ps1 file and select the "Run with Powershell" option. It may take a minute or two to finish.**
 
@@ -781,7 +782,7 @@ Set the Prefix Variable
 -------------------------
 Rename the **terraform.tfvars.example** file to **terraform.tfvars**.  
 
-Change where it says "yourname" to your own name. No spaces or special characters please. Keep it all lowercase. Save the file.
+Change where it says "yourname" to your own name. No spaces or special characters please. **Keep it all lowercase.** Save the file.
 
 ```tex
 # Rename or copy this file to terraform.tfvars
@@ -795,7 +796,9 @@ Now you will no longer be prompted to enter your prefix variable when you run te
 The **terraform.tfvars** file is your own personal settings file. You can use it to set or override any of the default variables in the variables.tf file.
 
 ???
-**Let's go ahead and set this variable in a file so we don't have to type it in every time we run terraform commands. You're going to simply rename the terraform.tfvars.example file to terraform.tfvars. Terraform knows to look for files that end in .tf or .tfvars. You can right click the file right inside VSC to rename it.**
+**Let's go ahead and set this variable in a file so we don't have to type it in every time we run terraform commands. You're going to simply rename the terraform.tfvars.example file to terraform.tfvars. Terraform knows to look for files that end in .tf or .tfvars. You can right click the file right inside VSC to rename it. You may put any text you like here but be sure and avoid very common names and words, or add a number to the end to guarantee it is unique.**
+
+NOTE TO INSTRUCTOR: If students have a very common name, they should add a number to the end of it to guarantee that it is available. The default Azure public 'cloudapp' DNS zone is a global namespace. If your student enters a very common word here, there's a chance it could be taken already. This will cause the Terraform run to fail.
 
 ---
 name: defining-variables
@@ -1156,6 +1159,9 @@ azurerm_resource_group.vaultworkshop: Creation complete after 1s (ID: /subscript
 Apply complete! Resources: 1 added, 0 changed, 0 destroyed.
 ```
 
+???
+The phrase "We can rebuild him. We have the technology." comes from 1970s TV show, The Six Million Dollar Man. https://www.youtube.com/watch?v=0CPJ-AbCsT8#t=2m00s 
+
 ---
 name: chapter-3b-lab
 Lab Exercise 3b: Tag Your Resource Group
@@ -1430,7 +1436,7 @@ SHELLCOMMANDS
 name: terraform-outputs
 The Outputs File
 -------------------------
-Open up the outputs.tf file in Visual Studio Code. Uncomment lines 11-32. Save the file.
+Open up the outputs.tf file in Visual Studio Code. Uncomment all of the outputs. Save the file.
 
 ```terraform
 output "Vault_Server_URL" {
@@ -1953,3 +1959,24 @@ Live Demo
 Live demo notes here
 
 TODO: Load the workshop code into TFE for a demo.
+
+---
+name: additional-resources
+Additional Resources
+-------------------------
+If you'd like to learn more about Terraform on Azure try the links below:
+
+HashiCorp Learning Portal  
+https://learn.hashicorp.com/terraform/
+
+Microsoft Terraform Quickstarts  
+https://docs.microsoft.com/en-us/azure/terraform/
+
+Terraform with Azure Cloudshell  
+https://docs.microsoft.com/en-us/azure/terraform/terraform-cloud-shell
+
+Terraform Azurerm Provider Documentation  
+https://www.terraform.io/docs/providers/azurerm/
+
+Link to this Slide Deck  
+https://scarolan.github.io/azure-terraform-vault-workshop/terraform
