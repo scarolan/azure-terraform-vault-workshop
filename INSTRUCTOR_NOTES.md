@@ -72,19 +72,19 @@ Write-Host -ForegroundColor Magenta "Fetching dynamic Azure credentials from Has
 $CREDS=(Invoke-RestMethod -Headers @{"X-Vault-Token" = ${VAULT_TOKEN}; "X-Vault-Namespace" = "Sales/SE"} -Method GET -Uri ${VAULT_ADDR}/v1/azure/creds/se-training-workstation-payg).data
 
 #write-output $CREDS
-#write-output $CREDS.client_id
-#write-output $CREDS.client_secret
+$CLIENT_ID=$CREDS.client_id
+$CLIENT_SECRET=$CREDS.client_secret
 
 Write-Host -ForegroundColor Yellow "Storing credentials as system environment variables..."
 
 [Environment]::SetEnvironmentVariable("ARM_SUBSCRIPTION_ID", "8708baf2-0a54-4bb4-905b-78d21ac150da", "Machine")
 [Environment]::SetEnvironmentVariable("ARM_TENANT_ID", "0e3e2e88-8caf-41ca-b4da-e3b33b6c52ec", "Machine")
-[Environment]::SetEnvironmentVariable("ARM_CLIENT_ID", "${CREDS.client_id}", "Machine")
-[Environment]::SetEnvironmentVariable("ARM_CLIENT_SECRET", "${CREDS.client_secret}", "Machine")
+[Environment]::SetEnvironmentVariable("ARM_CLIENT_ID", "${CLIENT_ID}", "Machine")
+[Environment]::SetEnvironmentVariable("ARM_CLIENT_SECRET", "${CLIENT_SECRET}", "Machine")
 
 Write-Host -ForegroundColor DarkGreen "Dynamic credentials are good for 8 hours. You may proceed with the workshop."
 
-# This is just for fun, put some ASCII art here if you like
+# This is just for fun, add some ASCII Art
 # Get-Content -Path C:\Users\Public\banner.txt
 
 Read-Host -Prompt "Press Enter to Continue..."
