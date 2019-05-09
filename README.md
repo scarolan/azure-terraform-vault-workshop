@@ -1,3 +1,10 @@
+# Deprecation Warning
+This code has all been moved to a new home as of May 9, 2018:
+
+https://github.com/hashicorp/se-terraform-vault-workshop
+
+No further development is happening in this repo. Please use the link above for the latest version of this workshop.
+
 # azure-terraform-vault-workshop
 This repo contains Terraform code for standing up a HashiCorp Vault training lab on Microsoft Azure. You can use it for a half-day Terraform workshop, a half-day Vault workshop or combined day-long workshop covering both. To set up and run either or both workshops, simply follow the instructions below.
 
